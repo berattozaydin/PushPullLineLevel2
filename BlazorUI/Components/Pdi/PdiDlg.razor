@@ -1,0 +1,139 @@
+﻿@using BlazorDAL.Models;
+@using BlazorUI.Api;
+@inject DialogService dialogService;
+
+<RadzenTemplateForm Data="customerOrderDto">
+    <RadzenRow Gap="2rem" Class="rz-p-0 rz-p-lg-4">
+        <RadzenColumn Size="8" SizeMD="5">
+            <RadzenStack>
+                <RadzenFieldset Text="Sipariş Bilgileri">
+                    <RadzenStack Gap="1rem">
+                        <RadzenRow AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="4">
+                                <RadzenLabel Text="Sipariş Adı" />
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="8">
+                                <RadzenTextBox Style="width: 100%;" Name="CardNr" @bind-Value=customerOrderDto.Name />
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="4">
+                                <RadzenLabel Text="Sipariş Numarası" />
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="8">
+                                <RadzenTextBox Style="width: 100%;" @bind-Value=customerOrderDto.OrderNumber />
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="4">
+                                <RadzenLabel Text="Sipariş Durumu" />
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="8">
+                                <PdiStatusDropdwn @bind-pdiStatusId=customerOrderDto.CustomerOrderStatusId />
+                            </RadzenColumn>
+                        </RadzenRow>
+
+                        <RadzenRow AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="4">
+                                <RadzenLabel Text="Sipariş Açıklaması" />
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="8">
+                                <RadzenTextArea Cols="20" Rows="4" @bind-Value="customerOrderDto.Remark" />
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="4">
+                                <RadzenLabel Text="Sipariş Oluşturma Tarihi" />
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="8">
+                                <RadzenDatePicker TValue="DateTime?" Cols="20" Rows="4" @bind-Value="customerOrderDto.CreatedDate" />
+                            </RadzenColumn>
+                        </RadzenRow>
+
+                    </RadzenStack>
+                </RadzenFieldset>
+            </RadzenStack>
+        </RadzenColumn>
+        <RadzenColumn Size="8" SizeMD="7">
+            <RadzenStack>
+                <RadzenFieldset Text="Bobin Bilgileri">
+                    <RadzenStack Gap="1rem">
+
+                        <RadzenRow AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="4">
+                                <RadzenLabel Text="ScheduleId" />
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="8">
+                                <RadzenTextBox Disabled="true" Placeholder="ScheduleId" Style="width: 100%;" />
+                            </RadzenColumn>
+                        </RadzenRow>
+
+                    </RadzenStack>
+                </RadzenFieldset>
+
+            </RadzenStack>
+        </RadzenColumn>
+
+
+    </RadzenRow>
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="1rem" Class="rz-mt-8 rz-mb-4">
+        <RadzenButton Icon="done" ButtonStyle="ButtonStyle.Success" class="dlgBtn" Click="@SaveCustomerOrder" Text="Kaydet" />
+        <RadzenButton ButtonStyle="ButtonStyle.Danger" class="dlgBtn" Click="@CloseDialog" Text="İptal" />
+    </RadzenStack>
+</RadzenTemplateForm>
+<style>
+    .dlgBtn {
+        border: 1px 2px;
+        border-radius: 10px;
+    }
+
+</style>
+@code {
+    [Parameter]
+    public string CustomerOrderId { get; set; } = "";
+
+    [Parameter]
+    public string dlgType { get; set; } = "create";
+
+    private CustomerOrderDto customerOrderDto = new CustomerOrderDto { };
+    [Inject]
+    CustomerOrderApi itemApi { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (dlgType == "create")
+        {
+            customerOrderDto = new CustomerOrderDto { };
+        }
+        if (dlgType == "update")
+        {
+            customerOrderDto = await itemApi.GetCustomerOrder(CustomerOrderId);
+        }
+        await base.OnInitializedAsync();
+
+    }
+    void CloseDialog()
+    {
+
+        dialogService.Close(true);
+
+    }
+    async void SaveCustomerOrder()
+    {
+        customerOrderDto.CustomerId = 1;
+
+        if (dlgType == "create")
+        {
+            customerOrderDto.CustomerOrderId = Guid.NewGuid().ToString();
+            customerOrderDto.CreatedDate = DateTime.Now;
+            await itemApi.AddCustomerOrder(customerOrderDto);
+
+        }
+        if (dlgType == "update")
+        {
+            await itemApi.UpdateCustomerOrder(customerOrderDto);
+        }
+        CloseDialog();
+    }
+
+}

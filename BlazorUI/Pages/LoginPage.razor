@@ -1,0 +1,137 @@
+﻿@page "/Login";
+@using Radzen;
+@using BlazorDAL.Models;
+@using BlazorUI.Api;
+@using BlazorUI.Src;
+@using BlazorUI.StateStore;
+@using Microsoft.AspNetCore.Authorization;
+
+@inject NotificationService NotificationService
+@attribute [AllowAnonymous]
+
+<div class="container">
+    <div class="d-flex justify-content-center mt-5 py-5">
+
+        <RadzenCard style="width:350px;height:450px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center py-3">
+                        <img src="/Image/cinarCelik.jpg" alt="Çınar Çelik" style="width: 19rem;" />
+                    </div>
+                    <div class="col-12 text-center py-3">
+                        <p class="fw-bold">Çınar Çelik Push Pull Asitleme Hattına Giriş Yap</p>
+                    </div>
+                    <div class="col-12">
+                        <span class="form-floating mb-3">
+                            <RadzenText class="px-2" TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Kullanıcı Adı</RadzenText>
+                            <RadzenTextBox @bind-Value=account.Username Placeholder="Lütfen Kullanıcı Giriniz" class="w-100" style="height:40px !important; border-radius:20px 20px !important" />
+                        </span>
+                    </div>
+                    <div class="col-12 py-2">
+                        <span class="form-floating mb-3">
+                            <RadzenText class="px-2" TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Şifre</RadzenText>
+                            <RadzenPassword @bind-Value=account.Password Placeholder="Lütfen Şifre Giriniz" class="w-100" style="height:40px !important;border-radius:20px 20px !important" />
+                        </span>
+                    </div>
+                    @if (isActivatedUser == false)
+                    {
+                        <div class="col-12 p-2">
+                            <div class="text-center">
+                                <RadzenButton Click="(()=>LoginUser())" ButtonStyle="ButtonStyle.Danger" style="border-radius:20px 20px" Text="Giriş Yap"></RadzenButton>
+                            </div>
+                        </div>
+                    }
+
+                    @if (isActivatedUser == true)
+                    {
+                        <div class="col-12 p-2">
+                            <div class="mx-3 text-center">
+                                <RadzenAlert Style="border-radius:10px; text-align:center;" AllowClose="false" Size="AlertSize.ExtraSmall" AlertStyle="@alertStyle" Variant="Variant.Flat" Shade="Shade.Lighter">
+                                    @alertMessage
+                                </RadzenAlert>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </RadzenCard>
+    </div>
+
+
+</div>
+<style scoped>
+    .background {
+        background-color: #ed213a !important;
+    }
+</style>
+@code {
+    AlertStyle alertStyle;
+    public string alertMessage = "";
+    public AccountDto account = new AccountDto();
+    [Inject]
+    ILocalStorageService localStorageService { get; set; }
+    [Inject]
+    AuthenticationStateProvider authenticationStateProvider { get; set; }
+    [Inject]
+    NavigationManager navigationManager { get; set; }
+    [Inject]
+    IHttpClient httpClient { get; set; }
+    [Inject]
+    AuthApi authApi { get; set; }
+    private bool _isActivatedUser = false;
+    public bool isActivatedUser
+    {
+        get
+        {
+            return _isActivatedUser;
+        }
+        set
+        {
+            if (_isActivatedUser == value) return;
+            _isActivatedUser = value;
+        }
+    }
+
+    public async Task LoginUser()
+    {
+        var logingUser = await authApi.Login(account);
+        if (logingUser.isSuccess == 0)
+        {
+            ChangeAlert("Kullanıcı adı veya şifre yanlış", AlertStyle.Danger);
+            await Task.Delay(500);
+            navigationManager.NavigateTo("/login", forceLoad: true);
+
+        }
+        if (logingUser.isSuccess == 1)
+        {
+            ChangeAlert("Giriş Yapılıyor...", AlertStyle.Success);
+            await Task.Delay(500);
+            await SaveLocalStorage(logingUser.token, logingUser.email, logingUser.username);
+            (authenticationStateProvider as AuthStateProvider).UserLogin(logingUser.email);
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", logingUser.token);
+            navigationManager.NavigateTo("/Pdi");
+
+        }
+        else
+        {
+            ChangeAlert("Kullanıcı adı veya şifre yanlış", AlertStyle.Danger);
+            await Task.Delay(500);
+            navigationManager.NavigateTo("/login");
+        }
+    }
+    async Task SaveLocalStorage(string token, string eMail, string userName)
+    {
+        await localStorageService.SetItemAsStringAsync("token", token);
+        await localStorageService.SetItemAsStringAsync("email", eMail);
+        await localStorageService.SetItemAsStringAsync("userName", userName);
+    }
+    void ChangeAlert(string changeAlertMessage, AlertStyle changeAlertStyle)
+    {
+        alertMessage = changeAlertMessage;
+        alertStyle = changeAlertStyle;
+        isActivatedUser = true;
+        StateHasChanged();
+    }
+}
+

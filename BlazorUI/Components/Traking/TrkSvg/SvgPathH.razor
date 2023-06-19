@@ -1,0 +1,12 @@
+﻿@inherits SvgBase
+
+<SvgBase Scale="Scale">
+    <path id="@Id" style="stroke:@Color;stroke-width:@Width" d="M @(Length + X),@Y H @X" />
+</SvgBase>
+
+
+@code {
+    [Parameter] public string Color { get; set; } = "black";
+    [Parameter] public float Width { get; set; } = 1;
+    [Parameter] public float Length { get; set; } = 1;
+}

@@ -1,0 +1,19 @@
+﻿@using Utilities;
+<foreignObject id="@Id" transform="@SvgUtility.GetTransform(X, Y, Angle, Scale)" width="@Width" height="@Height">
+    <body xmlns="http://www.w3.org/1999/xhtml">
+        @ChildContent
+    </body>
+</foreignObject>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public Single X { get; set; } = 0;
+    [Parameter] public Single Y { get; set; } = 0;
+    [Parameter] public string Width { get; set; } = "100%";
+    [Parameter] public string Height { get; set; } = "100%";
+    [Parameter] public Single Angle { get; set; } = 0;
+    [Parameter] public Single Scale { get; set; } = 1;
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+}

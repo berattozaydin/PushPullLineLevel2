@@ -1,0 +1,45 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <main>
+        <AuthorizeView>
+            <RadzenHeader Style="background-color:white;">
+                <div class="float-left">
+                    <div class="container-1">
+                        <div class="row">
+                            <div class="px-2" style="width:20%">
+                                <img src="/Image/tp-logo.png" alt="teknoplanjpg" width="275px" height="40px" />
+                            </div>
+                            <div class="justify-content-center" style="width:60%">
+                                <NavMenu />
+                            </div>
+                            <div class="justify-content-end" style="width:20%;">
+                                <div style="margin-left:1.6rem; margin-top:0.1rem;">
+                                    <RadzenButton Style=" background-color:red; text-decoration-color:white;font-size:small;">»  </RadzenButton>
+                                    <RadzenButton Style=" background-color:#3a8aec; text-decoration-color:white;font-size:small;" Click="()=>LogOut()" Text="Çıkış Yap"></RadzenButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </RadzenHeader>
+
+        </AuthorizeView>
+        <div class="content" style="margin-top:50px !important;">
+            @Body
+        </div>
+
+
+    </main>
+</div>
+
+@code {
+    [Inject]
+    NavigationManager NavigationManager { get; set; }
+    async void LogOut()
+    {
+        NavigationManager.NavigateTo("logout");
+
+    }
+}

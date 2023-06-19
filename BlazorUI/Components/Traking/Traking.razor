@@ -1,0 +1,352 @@
+﻿@using System.Timers;
+@using System.Globalization;
+@inject IJSRuntime JsRuntime;
+
+
+<div class="row">
+    <div class="col-4 col-md-2">
+        <RadzenAlert Color="ThemeColor.Warning">X: @Round(X) Y: @Round(Y)</RadzenAlert>
+    </div>
+    <div class="col-4 col-md-2">
+        <RadzenSwitch Text="Guide Lines" @bind-Value="openGuideLines" />
+    </div>
+    <div class="col-4 col-md-2">
+        Strip Counter: <h3>@stripCounter</h3>
+    </div>
+    <div class="col-2 col-md-1">
+        <div>Color</div>
+        <input class="mt-2" type="color" @bind-value="stripModel.color" />
+    </div>
+
+    <div class="col-2 col-md-1">
+        <RadzenTextBox Label="Coil No" @bind-Value="@stripModel.coilNo" />
+    </div>
+     <div class="col-2 col-md-1">
+        <RadzenNumeric Label="Coil No" @bind-Value="@stripModel.len" />
+    </div>
+         <div class="col-2 col-md-1">
+        <RadzenNumeric Label="Coil No" @bind-Value="@stripModel.schedule" />
+    </div>
+    <div class="col-2 col-md-1">
+        <div class="mt-3">
+            <RadzenButton Color="ThemeColor.Success" Text="Add" Click="()=>AddNewCoil()" />
+        </div>
+    </div>
+
+</div>
+
+
+@*
+    style="min-width: 1366px; min-height: 768px; width: 100%; height: 92vh; background-color: lightgray"
+*@
+<svg version="1.1" viewBox="0 0 384 216" xmlns="http://www.w3.org/2000/svg"
+     style="min-width: 1366px; min-height: 768px; width: 1920px; height:1080px;  background-color: #efefef"
+     @onmousemove="OnMouseMove" @onclick="SaveCoord">
+
+    @* <SvgHtml Scale="0.2f" >
+    <HxGrid TItem="CultureInfo" Responsive="true" DataProvider="GetGridData" PageSize="10">
+    <Columns>
+    <HxGridColumn HeaderText="Display Name" ItemTextSelector="@(item => item.DisplayName)" SortString="@nameof(CultureInfo.DisplayName)" IsDefaultSortColumn="true" />
+    <HxGridColumn HeaderText="Name" ItemTextSelector="@(item => item.Name)" SortString="@nameof(CultureInfo.Name)" />
+    </Columns>
+    </HxGrid>
+    </SvgHtml>*@
+
+    <SvgHtml Y="3" X="3" Height="400" Scale="0.17f">
+        <table class="hx-grid table table-hover">
+            <tr>
+                <th colspan="3" class="text-center">PRODUCED</th>
+            </tr>
+            <tr>
+                <th class="hx-grid-header-cell-container"></th>
+                <th class="hx-grid-header-cell-container">Coil</th>
+                <th class="hx-grid-header-cell-container">Meter</th>
+            </tr>
+            @if (stripProducedList != null)
+                @foreach (var item in stripProducedList)
+                {
+                    <tr>
+                        @*<td><div style="width: 50px; height: 25px; background-color: @item.color"></div></td>*@
+                        <td><input type="color" @bind-value="item.color" /></td>
+                        <td>@item.coilNo</td>
+                        <td>@item.len</td>
+                    </tr>
+                }
+        </table>
+    </SvgHtml>
+
+    <SvgHtml Y="3" X="170" Height="400" Scale="0.17f">
+        <table class="hx-grid table table-hover  ">
+            <tr>
+                <th colspan="5" class="text-center">IN-PROGESS</th>
+            </tr>
+            <tr>
+                <th class="hx-grid-header-cell-container"></th>
+                <th class="hx-grid-header-cell-container">Coil</th>
+                <th class="hx-grid-header-cell-container">Meter</th>
+                <th class="hx-grid-header-cell-container">Proc. Meter</th>
+                <th class="hx-grid-header-cell-container">Completed</th>
+            </tr>
+            @if (stripInLineList != null)
+                @foreach (var item in stripInLineList)
+                {
+                    <tr>
+                        @*<td><div style="width: 50px; height: 25px; background-color: @item.color"></div></td>*@
+                        <td><input type="color" @bind-value="item.color" /></td>
+                        <td>@item.coilNo</td>
+                        <td>@item.len</td>
+                        <td>@item.head</td>
+                        <td>% @Convert.ToInt32((item.head * 100.0f) / (item.len + 355)) </td>
+                    </tr>
+                }
+        </table>
+    </SvgHtml>
+
+    <SvgHtml Y="3" X="317" Height="400" Scale="0.17f">
+        <table class="hx-grid table table-hover">
+            <tr>
+                <th colspan="4" class="text-center">PLANNED</th>
+            </tr>
+            <tr>
+                <th class="hx-grid-header-cell-container"></th>
+                <th class="hx-grid-header-cell-container">Coil</th>
+                <th class="hx-grid-header-cell-container">Meter</th>
+                <th class="hx-grid-header-cell-container">Schedule</th>
+            </tr>
+            @if (stripPlannedList != null)
+                @foreach (var item in stripPlannedList)
+                {
+                    <tr>
+                        @*<td><div style="width: 50px; height: 25px; background-color: @item.color"></div></td>*@
+                        <td><input type="color" @bind-value="item.color" /></td>
+                        <td>@item.coilNo</td>
+                        <td>@item.len</td>
+                        <td>@item.schedule</td>
+                    </tr>
+                }
+        </table>
+    </SvgHtml>
+
+    <SvgBase Y="30">
+        <!-- Strip -->
+        <g>
+            <SvgPathP2P id="D-SHEAR-E" Width="@stripThickness" XStart="13" YStart="66.2f" XEnd="25.3f" YEnd="54.9f" Color="@zoneList.LastOrDefault()?.strip?.color"></SvgPathP2P>
+            @foreach (var zone in zoneList)
+            {
+                <SvgPathH Width="@stripThickness" X="@zone.meter" Y="55" Length="1" Color="@zone?.strip?.color"></SvgPathH>
+
+            }
+            <SvgPathP2P id="D-SHEAR-E" Width="@stripThickness" XStart="355" YStart="55" XEnd="368" YEnd="67" Color="@zoneList.Skip(2).FirstOrDefault()?.strip?.color"></SvgPathP2P>
+        </g>
+
+
+        @*  <g>
+        <SvgPathP2P id="D-SHEAR-E" Width="@stripThickness" XStart="13" YStart="66.2f" XEnd="25.3f" YEnd="54.9f" Color="green"></SvgPathP2P>
+        <SvgPathH id="D-SHEAR" Width="@stripThickness" X="25" Y="55" Length="55" Color="red"></SvgPathH>
+
+        <SvgPathH id="ANG-SHEAR" Width="@stripThickness" X="170" Y="55" Length="30" Color="red"></SvgPathH>
+        <SvgPathH id="ANG-SHEAR" Width="@stripThickness" X="200" Y="55" Length="40" Color="red"></SvgPathH>
+        <SvgPathH id="ANG-SHEAR" Width="@stripThickness" X="240" Y="55" Length="115" Color="red"></SvgPathH>
+        <SvgPathP2P id="D-SHEAR-E" Width="@stripThickness" XStart="355" YStart="55" XEnd="368" YEnd="67" Color="blue"></SvgPathP2P>
+        </g>*@
+
+
+        <!-- Equipments -->
+        <g>
+            <SvgReel Id="TR" X="10" Y="65" IsRotating="true" Color="@zoneList.LastOrDefault()?.strip?.color"></SvgReel>
+
+            <SvgShear Text="DSHR" X="50" Y="50"></SvgShear>
+            <SvgDryer Text="DRYER" X="70" Y="50.5f"></SvgDryer>
+
+            <SvgPinchRoll Text="PR-1" X="250" Y="50.2f" IsRotating=@true></SvgPinchRoll>
+
+            <SvgAngleShear Text="ASHR" X="262" Y="50"></SvgAngleShear>
+            <SvgDustCol Text="DCL2" X="273" Y="50"></SvgDustCol>
+
+            <SvgLeveller Text="LEVELLER" X="293" Y="50.2f"></SvgLeveller>
+            <SvgShear Text="ESHR" X="313" Y="50"></SvgShear>
+            <SvgDustCol Text="DCL1" X="321" Y="50"></SvgDustCol>
+            <SvgPreStr Text="PRE-STR" X="333" Y="48.7f"></SvgPreStr>
+
+            <SvgReel Id="POR" X="360" Y="65" IsRotating="true" Color="@zoneList.Skip(2).FirstOrDefault()?.strip?.color"></SvgReel>
+
+        </g>
+    </SvgBase>
+    <g>
+        <!-- ONLY DEVELOPMENT -->
+        @if (openGuideLines == true)
+        {
+            <path style="stroke:black;stroke-width:1;stroke-opacity:0.3;" d="M 500 @Round(Y) H 0" />
+            <path style="stroke:black;stroke-width:1;stroke-opacity:0.3;" d="M @Round(X) 500 V 0" />
+        }
+        <!--------------------->
+    </g>
+</svg>
+<ol>
+    @foreach (var item in coords)
+    {
+        <li> @item </li>
+    }
+</ol>
+
+@code {
+    private float stripThickness = 0.7f;
+    private double X;
+    private double Y;
+    private List<string> coords = new();
+    private bool openGuideLines = false;
+    private Timer timer = new Timer();
+    private int stripCounter = 0;
+    private List<string> colors = new() { "#FF0000", "#000000", "#00FF00", "#8C6262", "#0000FF", "#7433FF", "#FF5733" };
+    private List<Strip>? stripList;
+    private List<Strip>? stripInLineList;
+    private List<Strip>? stripPlannedList;
+    private List<Strip>? stripProducedList;
+    private List<Zone> zoneList = new();
+    private Strip emptyZoneStrip = new Strip { color = "white" };
+    private Strip stripModel = new Strip { color = "#000" };
+
+    record Strip
+    {
+        public int head = 0;
+        public int schedule = 0;
+        public int laterMeter = 0;
+        public int len = 0;
+        public string? coilNo;
+        public string? color;
+    }
+    record Zone
+    {
+        public int meter = 0;
+        public Strip? strip;
+    }
+
+    private void OnMouseMove(MouseEventArgs mouseEventArgs)
+    {
+        X = mouseEventArgs.OffsetX / 5;
+        Y = mouseEventArgs.OffsetY / 5;
+    }
+
+    private void SaveCoord()
+    {
+        coords.Add($"X: {Round(X)} Y: {Round(Y)}");
+    }
+
+    private double Round(double number)
+    {
+        return Convert.ToInt32(number);
+    }
+
+    private async void AddNewCoil()
+    {
+        if (stripList.Any(s => s.coilNo == stripModel.coilNo) == true)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", $"ERROR! {stripModel.coilNo} is already in PDI list.");
+            return;
+        }
+        if (stripModel.schedule - 5 < stripCounter)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "ERROR! Schedule cannot be in the past meter.");
+            return;
+        }
+
+        stripList!.Add(new Strip
+            {
+                coilNo = stripModel.coilNo,
+                len = stripModel.len,
+                schedule = stripModel.schedule,
+                color = stripModel.color,
+                head = 0
+            });
+
+
+        await JsRuntime.InvokeVoidAsync("alert", "SUCCESS!");
+    }
+
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        for (int i = 25; i <= 354; i += 1)
+        {
+            zoneList.Add(new Zone { meter = i, strip = emptyZoneStrip });
+        }
+        zoneList.Reverse();
+
+        stripList = new()
+        {
+            new Strip { coilNo = "A", color = colors[0], head = 0, len = 100, schedule = 0 },
+            new Strip { coilNo = "B", color = colors[1], head = 0, len = 250, schedule = 200 },
+            new Strip { coilNo = "C", color = colors[2], head = 0, len = 800, schedule = 500 },
+            new Strip { coilNo = "D", color = colors[3], head = 0, len = 1000, schedule = 1400 },
+            new Strip { coilNo = "E", color = colors[4], head = 0, len = 1000, schedule = 2500 },
+            new Strip { coilNo = "F", color = colors[5], head = 0, len = 1000, schedule = 3600 },
+            new Strip { coilNo = "G", color = colors[6], head = 0, len = 1000, schedule = 4700 },
+            new Strip { coilNo = "H", color = colors[0], head = 0, len = 1000, schedule = 5800 },
+        };
+
+        timer.Interval = 100;
+
+        timer.Elapsed += async (s, e) =>
+        {
+            stripCounter += 2;
+            var inProgressedStrips = stripList.Where(s => s.schedule <= stripCounter).OrderBy(x => x.head).ToList();
+            foreach (var strip in inProgressedStrips)
+            {
+                if (strip.head == 0)
+                {
+                    zoneList[0].strip = strip;
+                }
+                strip.head += 2;
+            }
+            var stripIndex = 0;
+            var currStrip = inProgressedStrips[stripIndex];
+
+            for (int i = 1; i < zoneList.Count; i++)
+            {
+                var zone = zoneList[i];
+                var zoneMeter = (355 - zone.meter);
+
+                if (currStrip.head < zoneMeter)
+                {
+                    stripIndex++;
+                }
+                if (stripIndex >= inProgressedStrips.Count)
+                {
+                    break;
+                }
+                currStrip = inProgressedStrips[stripIndex];
+
+                if (currStrip.coilNo != zone.strip.coilNo)
+                {
+                    var prevStrip = zoneList[i - 1];
+                    if (currStrip.coilNo == prevStrip.strip.coilNo && prevStrip.strip.coilNo != zone.strip.coilNo)
+                    {
+                        zone.strip = prevStrip.strip;
+                    }
+                }
+
+                if ((zone.strip.head - zone.strip.len) > zoneMeter)
+                {
+                    if (zone.strip.coilNo != emptyZoneStrip.coilNo)
+                    {
+                        zone.strip = emptyZoneStrip;
+                    }
+                }
+
+            }
+
+            stripPlannedList = stripList.Where(s => s.head == 0).ToList();
+            stripInLineList = stripList.Where(s => s.head > 0 && (s.schedule) < stripCounter && stripCounter < (s.len + s.schedule + 355)).ToList();
+            stripProducedList = stripList.Where(s => stripCounter > (s.len + s.schedule + 355)).ToList();
+            stripProducedList.Reverse();
+
+            await InvokeAsync(StateHasChanged);
+        };
+
+        timer.Start();
+    }
+
+}

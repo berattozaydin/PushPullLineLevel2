@@ -1,0 +1,32 @@
+﻿<g>
+    <path style="stroke:black;stroke-width:1;stroke-opacity:0.3;" d="M 500,@Y H 0" />
+    <path style="stroke:black;stroke-width:1;stroke-opacity:0.3;" d="M @X,500 V 0" />
+</g>
+
+@code {
+
+    [Parameter] public MouseEventArgs? mouseEventArgs { get; set; }
+
+    private double X;
+    private double Y;
+    private List<string> coords = new();
+
+    private void OnMouseMove(MouseEventArgs mouseEventArgs)
+    {
+        X = mouseEventArgs.OffsetX / 5;
+        Y = mouseEventArgs.OffsetY / 5;
+    }
+
+    private void SaveCoord()
+    {
+        coords.Add($"X: {Round(X)} Y: {Round(Y)}");
+    }
+
+    private double Round(double number)
+    {
+        return Convert.ToInt32(number);
+    }
+
+
+
+}

@@ -1,0 +1,16 @@
+﻿
+<SvgBase Scale="Scale">
+    <path id="@Id" style="stroke:@Color;stroke-width:@Width" d="m @XStart,@YStart @(XEnd-XStart),@(YEnd-YStart)" />
+</SvgBase>
+
+
+@code {
+    [Parameter] public string Id { get; set; }
+    [Parameter] public string Color { get; set; } = "black";
+    [Parameter] public float XStart { get; set; } = 0;
+    [Parameter] public float YStart { get; set; } = 0;
+    [Parameter] public float XEnd { get; set; } = 0;
+    [Parameter] public float YEnd { get; set; } = 0;
+    [Parameter] public float Scale { get; set; } = 1;
+    [Parameter] public float Width { get; set; } = 1;
+}

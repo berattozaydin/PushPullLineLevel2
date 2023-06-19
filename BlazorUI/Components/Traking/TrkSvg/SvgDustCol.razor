@@ -1,0 +1,17 @@
+﻿@inherits SvgBase
+
+<SvgBase X="X" Y="Y" Angle="Angle" Scale="Scale" style="width: 100%;">
+    <g style="fill:#7b7b7b;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-opacity:1;paint-order:stroke fill markers">
+        <circle cx="7.7213488" cy="3.0263629" r="1" />
+        <circle cx="6.3288984" cy="7.1046786" r="1" />
+    </g>
+    <path style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1" d="M 3.6294782,8.464388 V 0.23788799 H 10.666678 V 8.616118 l -1.5757598,2.9194 -3.94023,-0.062 z" />
+    <text x="4" y="15" font-family="sans-serif" font-size="2.8px" font-weight="bold" stroke-width="0.264579" style="line-height:1.25;text-align: center">
+        @Text
+    </text>
+</SvgBase>
+
+
+@code {
+    [Parameter] public string Text { get; set; } = "Dust-Col";
+}

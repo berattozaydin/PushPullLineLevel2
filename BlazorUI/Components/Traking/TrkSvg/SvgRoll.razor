@@ -1,0 +1,46 @@
+﻿@inherits SvgBase
+
+<SvgBase Id="@Id" X="X" Y="Y" Angle="Angle" Scale="Scale"> 
+    <g style="display:inline;stroke:#000000; fill:#000000; stroke-opacity:1; stroke-width: 0.1;"> 
+
+        <ellipse cx="5.0123" cy="4.9924" rx="2.5648" ry="2.5543" fill="#0fd31f" stroke="#000" stroke-linejoin="round" stroke-opacity=".096654" stroke-width=".092821" />
+        <path d="m2.6046 4.8021c0.09193-0.79538 0.54027-1.4827 1.2319-1.8886 0.2395-0.14054 0.6849-0.28361 0.96228-0.30911l0.21236-0.01953v2.4044h-2.4281zm2.4065 1.3862v-1.2004h2.4225l-0.02132 0.19787c-0.0906 0.84085-0.60144 1.5724-1.3596 1.947-0.28417 0.1404-0.69463 0.25528-0.91338 0.25566l-0.12833 1.95e-4z"  >
+            @if (IsRotating)
+            {
+                <animateTransform attributeName="transform" begin="0" dur="2s"
+                              from="@GetAngleFrom() 5.0110659 5.0110659" repeatCount="indefinite"
+                              to="@GetAngleTo() 5.0110659 5.0110659" type="rotate" />
+            }
+        </path>
+
+    </g>
+</SvgBase>
+
+@code { 
+    [Parameter] public bool IsRotating { get; set; } = true;
+    [Parameter] public bool IsRotatingLeft { get; set; } = true;
+
+    private string GetAngleFrom()
+    {
+        if (IsRotatingLeft == true)
+        {
+            return "360";
+        }
+        else
+        {
+            return "0";
+        }
+    }
+
+    private string GetAngleTo()
+    {
+        if (IsRotatingLeft == true)
+        {
+            return "0";
+        }
+        else
+        {
+            return "360";
+        }
+    }
+}

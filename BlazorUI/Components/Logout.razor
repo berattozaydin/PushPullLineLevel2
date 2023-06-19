@@ -1,0 +1,30 @@
+﻿@page "/Logout"
+@using System.Security.Claims
+@using System.Web;
+@using BlazorUI.Src;
+@using BlazorUI.StateStore;
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NavigationManager _navigationManager;
+@attribute [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+
+@code {
+    [Inject]
+    public AuthenticationStateProvider AuthStateProvider { get; set; }
+    [Inject]
+    ILocalStorageService LocalStorageService { get; set; }
+    [Inject]
+    IHttpClient httpClient { get; set; }
+    [Inject]
+    NavigationManager NavigationManager { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        LocalStorageService.ClearAsync();
+        await LocalStorageService.RemoveItemAsync("token");
+        await LocalStorageService.RemoveItemAsync("email");
+        await LocalStorageService.RemoveItemAsync("userName");
+        (AuthStateProvider as AuthStateProvider).UserLogout();
+        httpClient.DefaultRequestHeaders.Authorization = null;
+        NavigationManager.NavigateTo("login");
+        await Task.CompletedTask;
+    }
+}

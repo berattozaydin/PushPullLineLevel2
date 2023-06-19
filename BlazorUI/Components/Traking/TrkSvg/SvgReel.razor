@@ -1,0 +1,27 @@
+﻿@inherits SvgBase
+
+<SvgBase Id="@Id" X="X" Y="Y" Angle="Angle" Scale="Scale">
+
+
+    <ellipse   cx="5.0122595" cy="4.9924016" rx="4.8090625" ry="4.7892046" fill="@Color" stroke="#000000" stroke-linejoin="round" stroke-width="0.406394" style="display:inline;" />
+
+    <g style="display:inline;stroke:#000000; stroke-opacity:0.01; stroke-width: 0.1;">
+        
+        <SvgRoll X="0" Y="0" Scale="1" IsRotatingLeft=@IsRotatingLeft IsRotating=@IsRotating></SvgRoll>
+    </g>
+
+</SvgBase>
+
+
+@code {
+
+    [Parameter] public bool IsRotating { get; set; } = true;
+    [Parameter] public bool IsRotatingLeft { get; set; } = true;
+    [Parameter] public string Color { get; set; } = "#dadadaff";
+
+    public SvgReel()
+    {
+        Id = "Reel";
+    }
+     
+}

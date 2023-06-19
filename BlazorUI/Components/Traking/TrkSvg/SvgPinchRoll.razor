@@ -1,0 +1,18 @@
+﻿@inherits SvgBase
+
+<SvgBase X="X" Y="Y" Angle="Angle" Scale="Scale">
+    <rect x=".68839" y=".13229" width="5.8343" height="9.3913" ry="2.6604" fill="none" stop-color="#000000" stroke="#000" stroke-linecap="round" stroke-miterlimit="19.2" stroke-opacity=".97026" stroke-width=".26458" />
+    <text x="-0.26182821" y="14.440626" font-family="sans-serif" font-size="2.8222px" font-weight="bold" stroke-width=".26458" style="line-height:1.25" xml:space="preserve">          
+        @Text
+    </text>
+    <g fill="#7d7d7d" stroke="#000" stroke-width=".26458"> 
+        <SvgRoll X="0.6f" Y="0" Scale="0.6f" IsRotatingLeft=@false IsRotating=@IsRotating></SvgRoll>
+        <SvgRoll X="0.6f" Y="3.6f" Scale="0.6f" IsRotating=@IsRotating></SvgRoll>
+    </g>
+</SvgBase>
+
+
+@code {
+    [Parameter] public string Text { get; set; } = "PR-X";
+    [Parameter] public bool IsRotating { get; set; } = false;
+}

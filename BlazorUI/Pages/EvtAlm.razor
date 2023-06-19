@@ -1,0 +1,114 @@
+﻿@page "/EvtAlm"
+@using BlazorDAL.Models;
+@using BlazorUI.Api;
+
+@inject DialogService dialogService;
+<RadzenCard style="display: flex; align-items: center; gap: 0.5rem;background-color:#c6c3c6;">
+    <div class="m-auto">
+        <RadzenCard class="mx-auto " style="display: flex; text-align:end; align-items:end; gap: 0.6rem;background-color:#c6c3c6;">
+            <div class="container">
+                <div class="row float-end">
+                    <div class="col-6">
+                        <RadzenButton Text="Yenile" Style="border-radius:20px;" ButtonStyle="ButtonStyle.Primary" Click="()=>GetAll()" Icon="refresh"></RadzenButton>
+
+                    </div>
+                </div>
+            </div>
+        </RadzenCard>
+        <RadzenDataGrid @ref="radzenDataGrid"
+                        FilterText="Ara..."
+                        AllowFiltering="true"
+                        AllowColumnResize="true"
+                        AllowAlternatingRows="false"
+                        FilterMode="FilterMode.Simple"
+                        AllowSorting="true"
+                        LoadData="OnFilter"
+                        AllowVirtualization="true"
+                        Count="@count"
+                        AllowPaging="true"
+                        PagerHorizontalAlign="HorizontalAlign.Left"
+                        ShowPagingSummary="true"
+                        Data="@evtAlm"
+                        TItem="EvtAlmDto"
+                        Style="background-color:#c6c3c6; --rz-cell-filter-width:20px"
+                        GridLines="DataGridGridLines.Both"
+                        Density="Density.Compact"
+                        IsLoading="@isLoading"
+                        >
+            <Columns>
+
+                <RadzenDataGridColumn TItem="EvtAlmDto" Filterable Property="event_alarm_id" Title="Numarası" Width="20px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Property="machine_name" Title="Makine Adı" Width="20px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Property="user_name" Title="Kullanıcı Adı" Width="20px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Property="log_description" Title="Açıklaması" Width="100px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Property="log_method" Title="Metodu" Width="20px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" SortOrder="SortOrder.Descending" Property="dati" Title="Tarihi" Width="20px" />
+            </Columns>
+            </RadzenDataGrid>
+        </div>
+        </RadzenCard>
+
+        @code {
+    List<EvtAlmDto> evtAlm = new List<EvtAlmDto>();
+    RadzenDataGrid<EvtAlmDto>? radzenDataGrid;
+    [Inject]
+    EvtAlmApi evtAlmApi { get; set; }
+    private EvtAlarmParams evtAlmDto { get; set; }
+    private int count = 0;
+    private bool isLoading = false;
+    protected override async Task OnInitializedAsync()
+    {
+        evtAlmDto = new EvtAlarmParams
+            {
+                SortField = "Dati",
+                SortOrder = -1,
+                Page = 20,
+                FilterValue = string.Empty,
+                Property=""
+            };
+        await GetAll();
+
+    }
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var column = radzenDataGrid.ColumnsCollection.Where(c => c.Property == "Name").FirstOrDefault();
+
+            if (column != null)
+            {
+
+                column.FilterOperator = FilterOperator.StartsWith;
+                radzenDataGrid.Reload();
+            }
+        }
+
+        return base.OnAfterRenderAsync(firstRender);
+    }
+    async Task GetAll()
+    {
+        evtAlm = await evtAlmApi.GetAllEvtAlm(evtAlmDto);
+        count = evtAlm.Count();
+    }
+    async Task OnFilter(LoadDataArgs args)
+    {
+        int orderBy = -1;
+        var a = args.OrderBy;
+        if (a.Contains("desc") == true) orderBy = -1;
+        else orderBy = 1;
+
+        isLoading = true;
+        evtAlmDto = new EvtAlarmParams
+            {
+                SortField = args.OrderBy,
+                SortOrder = orderBy,
+                Page = args.Skip,
+                FilterValue=args.Filters.FirstOrDefault()?.FilterValue,
+                Property=args.Filters.FirstOrDefault()?.Property,
+            };
+        isLoading = false;
+        await GetAll();
+        await Task.CompletedTask;
+    }
+}
+

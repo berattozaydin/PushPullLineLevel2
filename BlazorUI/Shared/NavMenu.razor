@@ -1,0 +1,75 @@
+﻿
+<AuthorizeView>
+    <Authorized>
+        <RadzenMenu class="radzenMenu">
+
+            <RadzenMenuItem Text="Anasayfa" Path="Traking"></RadzenMenuItem>
+            <RadzenMenuItem @ref="radzenMenuItemRef" Text="Bobin Bilgileri">
+                <RadzenMenuItem Icon="donut_large" Text="Pdi" class="subItem" Path="Pdi"></RadzenMenuItem>
+                <RadzenMenuItem Icon="save" Text="Pdo" class="subItem" Path="pdo"></RadzenMenuItem>
+            </RadzenMenuItem>
+            <RadzenMenuItem Text="Olay Günlükleri" Path="EvtAlm"></RadzenMenuItem>
+            <RadzenMenuItem Text="Kaliteler"></RadzenMenuItem>
+            <RadzenMenuItem Text="Reçeteler"></RadzenMenuItem>
+        </RadzenMenu>
+    </Authorized>
+    <NotAuthorized>
+    </NotAuthorized>
+</AuthorizeView>
+
+<style>
+    .radzenMenu {
+        max-width: 60% !important;
+        text-align: center !important;
+    }
+
+    .rz-menu {
+        background-color: white !important;
+    }
+
+    .radzenMenu .rz-navigation-item-link {
+        margin-left: 1.5rem;
+        width: 195px;
+        margin-top: auto;
+        height: 40px;
+        background-color: #3a8aec !important;
+        text-decoration-color: unset !important;
+    }
+
+    .rz-navigation-item-link:hover {
+        background-color: red !important;
+    }
+
+    .rz-navigation-item-link .rz-navigation-item-icon-children {
+        display: none;
+    }
+
+    .rz-navigation-menu {
+        width: 155px !important;
+        margin-left: 0.75rem !important;
+        border-color: white;
+        padding:0 !important;
+        top:2.55rem !important;
+        border-style: solid;
+        background-color: #3a8aec !important;
+    }
+
+        .rz-navigation-menu .rz-navigation-item-link {
+            width: 225px !important;
+            margin: auto !important;
+            text-align: center !important;
+        }
+    .rz-menu-open .rzi {
+        background-color: #3a8aec !important;
+    }
+
+    .rz-menu-closed .rzi {
+        background-color: #3a8aec !important;
+    }
+</style>
+@code {
+    private bool collapseNavMenu = true;
+    public RadzenMenuItem radzenMenuItemRef;
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+}

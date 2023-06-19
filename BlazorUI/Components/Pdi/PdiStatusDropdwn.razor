@@ -1,0 +1,38 @@
+﻿@using BlazorDAL;
+@using BlazorUI.Api;
+<RadzenDropDown TextProperty="Name"
+                ValueProperty="CustomerOrderStatusId"
+                @bind-Value=pdiStatusId
+                Data=@customerOrderStatusList Style="border-radius:10px !important;height:40px !important;width:200px !important;">
+</RadzenDropDown>
+
+@code {
+    private int _pdiStatusId;
+    [Parameter]
+    public int pdiStatusId
+    {
+        get
+        {
+            return _pdiStatusId;
+        }
+        set
+        {
+            if (_pdiStatusId == value) return;
+            _pdiStatusId = value;
+            pdiStatusIdChanged.InvokeAsync(value);
+
+        }
+    }
+
+    [Parameter]
+    public EventCallback<int> pdiStatusIdChanged { get; set; }
+    IEnumerable<CustomerOrderStatus> customerOrderStatusList;
+    //List<string> customerOrderStatusList;
+    [Inject]
+    CustomerOrderApi itemApi { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        customerOrderStatusList =await itemApi.GetCustomerOrderStatusList();
+    }
+}

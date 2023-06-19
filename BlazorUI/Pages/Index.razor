@@ -1,0 +1,55 @@
+﻿@page "/home"
+@using BlazorDAL.Models;
+@using Microsoft.AspNetCore.SignalR.Client;
+
+@inject NavigationManager NavigationManager;
+<PageTitle>Anasayfa</PageTitle>
+
+@code {
+    private HubConnection hubConnection;
+    private string _message;
+    private List<EvtAlmDto> evtAlmDto;
+    public string message
+    {
+        get { return _message; }
+        set
+        {
+            if (_message == value) return;
+            _message = value;
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await ConnectWebSocketAsync();
+    }
+    private async Task ConnectWebSocketAsync()
+    {
+
+        var pn = "/home";
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl("http://localhost:5213/websocket?pagename=" + pn)
+        .WithAutomaticReconnect()
+        .Build();
+        await StartSignalRSocketAsync();
+    }
+    private async Task StartSignalRSocketAsync()
+    {
+        try
+        {
+            await hubConnection.StartAsync();
+            ReceiveMessage();
+        }
+        catch (Exception ex)
+        {
+            await ConnectWebSocketAsync();
+        }
+    }
+    private void ReceiveMessage()
+    {
+        hubConnection.On<string, List<EvtAlmDto>>("ReceiveMessage", (user, message) =>
+      {
+          this.evtAlmDto = message;
+          StateHasChanged();
+      });
+    }
+}

@@ -1,0 +1,145 @@
+﻿@page "/Pdi"
+@using BlazorDAL.Models;
+@using BlazorUI.Api;
+@using BlazorUI.Components.Pdi;
+@using Microsoft.AspNetCore.Components.WebAssembly.Services;
+@inject DialogService dialogService;
+<RadzenCard style="display: flex; align-items: center; gap: 0.5rem;background-color:#c6c3c6;">
+    <div class="m-auto">
+        <RadzenCard class="mx-auto " style="display: flex; text-align:end; align-items:end; gap: 0.6rem;background-color:#c6c3c6;">
+            <div class="container">
+                <div class="row float-end">
+                    <div class="col-6">
+                        <RadzenButton Text="Ekle" Style="border-radius:20px;" ButtonStyle="ButtonStyle.Success" Click="@(()=>OpenCustomerOrderDlg(null,"create"))" Icon="add_circle_outline"></RadzenButton>
+                    </div>
+                    <div class="col-6">
+                        <RadzenButton Text="Yenile" Style="border-radius:20px;" ButtonStyle="ButtonStyle.Primary" Click="@(()=>GetAll())" Icon="refresh"></RadzenButton>
+
+                    </div>
+                </div>
+            </div>
+        </RadzenCard>
+        <RadzenDataGrid @ref="radzenDataGrid"
+                        FilterText="Ara..."
+                        AllowFiltering="true"                   
+                        AllowAlternatingRows="false"
+                        FilterMode="FilterMode.Simple"
+                        AllowSorting="true"
+                        Filter="@OnFilter"
+                        AllowPaging="true"
+                        PagerHorizontalAlign="HorizontalAlign.Left"
+                        Data="@customerOrderDtos"
+                        TItem="CustomerOrderDto"
+                        Style="background-color:#c6c3c6; --rz-cell-filter-width:20px"
+                        GridLines="DataGridGridLines.Both"
+                        SelectionMode="DataGridSelectionMode.Single"
+                        Density="Density.Compact"
+                        RowRender="@RowRender"
+                        >
+            <Columns>
+
+                <RadzenDataGridColumn TItem="CustomerOrderDto" Filterable Property="CustomerOrderId" Title="Bobin Numarası" Width="50px" />
+                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="CustomerOrderStatusName" Title="Bobin Durumu" Width="50px" />
+                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="Name" Title="Kalınlık" Width="50px" />
+                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="Remark" Title="Genişlik" Width="50px" />
+                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="OrderNumber" Title="Ağırlık" Width="50px" />
+                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="OrderNumber" Title="Uzunluk" Width="50px" />
+                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="OrderNumber" Title="İç Çap" Width="50px" />
+                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="OrderNumber" Title="Dış Çap" Width="50px" />
+                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="CustomerOrderId" Title="İşlemler" Width="50px">
+                    <Template Context="data">
+                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="pageview" class="h-25 m-1" Click="@(()=>OpenCustomerOrderDlg(data.CustomerOrderId,"update"))" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="delete" class="h-25 m-1" Click="@(()=>DeleteCustomerOrder(data))" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="list" class="h-25 m-1" Click="@(()=>ChangePdiStatus(data.CustomerOrderId))" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+            </RadzenDataGrid>
+        </div>
+        </RadzenCard>
+        @code {
+    List<CustomerOrderDto> customerOrderDtos = new List<CustomerOrderDto>();
+    RadzenDataGrid<CustomerOrderDto>? radzenDataGrid;
+    [Inject]
+    CustomerOrderApi customerOrderApi { get; set; }
+    public CustomerOrderDto lazyParams = new CustomerOrderDto { };
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAll();
+
+    }
+    async Task OpenCustomerOrderDlg(string customerOrderId, string dlgType)
+    {
+        DialogOptions dialogOptions = new DialogOptions
+            {
+                Width = "1000px",
+                Height = "650px",
+                ShowTitle = true,
+            };
+
+        Dictionary<string, object> dict = new Dictionary<string, object>()
+        {
+            {"CustomerOrderId",customerOrderId},
+            {"dlgType",dlgType}
+        };
+        var dialogTitle = (dlgType == "create" ? "Sipariş Ekle" : (customerOrderId + " Siparişi Düzenle"));
+        var obj = await dialogService.OpenAsync<PdiDlg>(dialogTitle, dict, dialogOptions);
+        if (obj == true)
+        {
+            await GetAll();
+        }
+    }
+    async Task GetAll()
+    {
+        customerOrderDtos = await customerOrderApi.GetCustomerOrderList();
+    }
+    async void DeleteCustomerOrder(CustomerOrderDto customerOrderId)
+    {
+        var result = await dialogService
+        .Confirm(customerOrderId.CustomerOrderId + " bobinini silmek istiyor musunuz?", "Uyarı",
+        new ConfirmOptions { OkButtonText="Evet", CancelButtonText="Hayır" });
+        if (result == true)
+        {
+            await customerOrderApi.DeleteCustomerOrder(customerOrderId);
+            await GetAll();
+        }
+
+    }
+    async Task ChangePdiStatus(string coilId)
+    {
+        DialogOptions dialogOptions = new DialogOptions
+            {
+                Width = "330px",
+                Height = "310px",
+                ShowTitle = true,
+                CssClass = "rounded-1"
+            };
+        Dictionary<string, object> dict = new Dictionary<string, object>()
+        {
+            {"coilId",coilId},
+        };
+        var result = await dialogService.OpenAsync<PdiStatusDlg>("Bobin Durumu Değiştir", dict, dialogOptions);
+        if (result == true)
+        {
+            await GetAll();
+        }
+
+    }
+    async void OnFilter(DataGridColumnFilterEventArgs<CustomerOrderDto> args)
+    {
+        lazyParams.Page = 1;
+        lazyParams.First = 0;
+        lazyParams.Rows = 20;
+        lazyParams.TotalRecords=20;
+        lazyParams.SortOrder =(int)(args.Column.SortOrder.Value);
+        lazyParams.SortField = args.FilterValue.ToString();
+        //await GetAll();
+    }
+    void RowRender(RowRenderEventArgs<CustomerOrderDto> args)
+    {
+        if (args.Data.CustomerOrderStatusName == "Sipariş Oluşturuldu")
+        {
+            args.Attributes.Add("style", $"background-color:red");
+        }
+    }
+}
