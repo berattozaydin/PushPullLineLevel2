@@ -1,3 +1,4 @@
+using Blazor.Core.Src;
 using BlazorBLL.Managers;
 using BlazorBLL.Middleware;
 using BlazorBLL.State;
@@ -18,14 +19,14 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
-var level3DbConnection = builder.Configuration["ConnectionString:PostGre"];
-
+var level3DbConnection = builder.Configuration.GetSection("ConnectionString").Get<ConnectionString>();
+var dbProviders = builder.Configuration.GetSection("DbProviders").Get<DbProviders>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton(x =>
 {
     return new Database(DatabaseConfiguration.Build()
-   .UsingConnectionString(level3DbConnection)
-   .UsingProviderName("Npgsql")
+   .UsingConnectionString(ConnectionString.PostGre)
+   .UsingProviderName(DbProviders.PostSql)
    .UsingCommandTimeout(180)
    .WithAutoSelect());
 }
@@ -33,8 +34,8 @@ builder.Services.AddSingleton(x =>
 builder.Services.AddScoped<IDatabase>(x =>
 {
     return DatabaseConfiguration.Build()
-       .UsingConnectionString(level3DbConnection)
-       .UsingProviderName("Npgsql")
+       .UsingConnectionString(ConnectionString.PostGre)
+       .UsingProviderName(DbProviders.PostSql)
        .UsingCommandTimeout(180)
        .WithAutoSelect()
        .Create();
