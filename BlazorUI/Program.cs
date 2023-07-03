@@ -8,6 +8,7 @@ using BlazorUI.Src;
 using BlazorUI.StateStore;
 using BlazorUI;
 using BlazorDAL.Models;
+using Havit.Blazor.Components.Web;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -52,6 +53,7 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
+builder.Services.AddHxServices();
 System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
 customCulture.NumberFormat.NumberDecimalSeparator = ".";
 Thread.CurrentThread.CurrentCulture = customCulture;

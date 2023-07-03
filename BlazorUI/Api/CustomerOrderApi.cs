@@ -9,10 +9,10 @@ namespace BlazorUI.Api
 {
     public class CustomerOrderApi
     {
-        string END_POINT = "http://localhost:5213/api/customerOrder/";
+        string END_POINT = "http://localhost:5213/api/customerOrder/";  //must be localhost debug mode
         IHttpClient httpClient;
         NavigationManager navigationManager;
-        //string END_POINT = "";
+        //string END_POINT = ""; // must be pusblish
         public CustomerOrderApi(IHttpClient httpClient, NavigationManager navigationManager)
         {
             this.httpClient = httpClient;

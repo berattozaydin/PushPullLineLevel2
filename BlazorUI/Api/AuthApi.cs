@@ -8,14 +8,14 @@ namespace BlazorUI.Api
 {
     public class AuthApi
     {
-        string END_POINT = "http://localhost:5213/api/auth/";
+        string END_POINT = "http://localhost:5213/api/auth/"; // must be empty publish
         IHttpClient httpClient;
         NavigationManager navigationManager;
         public AuthApi(IHttpClient httpClient, NavigationManager navigationManager)
         {
             this.httpClient = httpClient;
             this.navigationManager = navigationManager;
-            // END_POINT = navigationManager.BaseUri+"api/auth/";
+            // END_POINT = navigationManager.BaseUri+"api/auth/"; // must be open for publish
 
         }
         public async Task<Result> Login(AccountDto user)

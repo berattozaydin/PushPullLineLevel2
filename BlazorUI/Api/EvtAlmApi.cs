@@ -9,13 +9,13 @@ namespace BlazorUI.Api
 {
     public class EvtAlmApi
     {
-        string END_POINT = "http://localhost:5213/api/EvtAlm/";
+        string END_POINT = "http://localhost:5213/api/EvtAlm/"; // must be empty publish
         IHttpClient httpClient;
         NavigationManager navigationManager;
         public EvtAlmApi(NavigationManager navigationManager, IHttpClient httpClient)
         {
             this.httpClient= httpClient;
-            //END_POINT = navigationManager.BaseUri+"api/evtalm/";
+            //END_POINT = navigationManager.BaseUri+"api/evtalm/"; //must be open for publish
 
         }
         public async Task<List<EvtAlmDto>> GetAllEvtAlm(EvtAlarmParams evtAlmDto)
