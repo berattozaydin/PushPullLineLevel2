@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBLL", "BlazorBLL\Blaz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDAL", "BlazorDAL\BlazorDAL.csproj", "{F94AC2DF-4F29-43D3-B140-303FA848A4F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "L3Service.Com", "L3Service.Com\L3Service.Com.csproj", "{E1921360-9B48-45EB-BF66-2DDF39183F7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "L3Service.Com", "L3Service.Com\L3Service.Com.csproj", "{E1921360-9B48-45EB-BF66-2DDF39183F7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Core", "Blazor.Core\Blazor.Core.csproj", "{30BE19E0-7D26-429F-AC25-81EE871A802D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Core", "Blazor.Core\Blazor.Core.csproj", "{30BE19E0-7D26-429F-AC25-81EE871A802D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

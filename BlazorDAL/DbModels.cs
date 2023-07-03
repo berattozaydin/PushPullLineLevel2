@@ -408,4 +408,114 @@ namespace BlazorDAL
         }
         DateTime _dati;
     }
+
+    [TableName("delay")]
+    [PrimaryKey("delay_id",AutoIncrement =true)]
+    [ExplicitColumns]
+    public class delay : Record<event_alarm>
+    {
+        [Column]
+        public int delay_id
+        {
+            get { return _delay_id; }
+            set { _delay_id = value; OnPropertyChanged(); }
+        }
+        int _delay_id;
+
+        [Column]
+        public int delay_group_code
+        {
+            get { return _delay_group_code; }
+            set { _delay_group_code = value; OnPropertyChanged(); }
+        }
+        int _delay_group_code;
+
+        [Column]
+        public int delay_reason_code
+        {
+            get { return _delay_reason_code; }
+            set { _delay_reason_code = value; OnPropertyChanged(); }
+        }
+        int _delay_reason_code;
+
+        [Column]
+        public int delay_class_code
+        {
+            get { return _delay_class_code; }
+            set { _delay_class_code = value; OnPropertyChanged(); }
+        }
+        int _delay_class_code;
+
+        [Column]
+        public string delay_group_name
+        {
+            get { return _delay_group_name; }
+            set { _delay_group_name = value; OnPropertyChanged(); }
+        }
+        string _delay_group_name;
+
+        [Column]
+        public string delay_reason_name
+        {
+            get { return _delay_reason_name; }
+            set { _delay_reason_name = value; OnPropertyChanged(); }
+        }
+        string _delay_reason_name;
+
+        [Column]
+        public string delay_class_name
+        {
+            get { return _delay_class_name; }
+            set { _delay_class_name = value; OnPropertyChanged(); }
+        }
+        string _delay_class_name;
+
+        [Column]
+        public int duration
+        {
+            get { return _duration; }
+            set { _duration = value; OnPropertyChanged(); }
+        }
+        int _duration;
+
+        [Column]
+        public int shift_id
+        {
+            get { return _shift_id; }
+            set { _shift_id = value; OnPropertyChanged(); }
+        }
+        int _shift_id;
+
+        [Column]
+        public string accept_by
+        {
+            get { return _accept_by; }
+            set { _accept_by = value; OnPropertyChanged(); }
+        }
+        string _accept_by;
+
+        [Column]
+        public DateTime begin_date
+        {
+            get { return _begin_date; }
+            set { _begin_date = value; OnPropertyChanged(); }
+        }
+        DateTime _begin_date;
+
+        [Column]
+        public DateTime end_date
+        {
+            get { return _end_date; }
+            set { _end_date = value; OnPropertyChanged(); }
+        }
+        DateTime _end_date;
+
+        [Column]
+        public string remark
+        {
+            get { return _remark; }
+            set { _remark = value; OnPropertyChanged(); }
+        }
+        string _remark;
+    }
 }
