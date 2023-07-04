@@ -32,7 +32,7 @@
     CustomerOrderApi itemApi { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        customerOrderStatusList =await itemApi.GetCustomerOrderStatusList();
+        customerOrderStatusList = await itemApi.GetCustomerOrderStatusList();
+        
     }
 }

@@ -12,7 +12,7 @@
             <div class="container">
                 <div class="row float-end">
                     <div class="col-6">
-                        <RadzenButton Text="Ekle" Style="border-radius:20px;" ButtonStyle="ButtonStyle.Success" Click="@(()=>OpenCustomerOrderDlg(null,"create"))" Icon="add_circle_outline"></RadzenButton>
+                        <RadzenButton Text="Ekle" Style="border-radius:20px;" ButtonStyle="ButtonStyle.Success" Click="@(()=>OpenDelayDlg(null,"create"))" Icon="add_circle_outline"></RadzenButton>
                     </div>
                     <div class="col-6">
                         <RadzenButton Text="Yenile" Style="border-radius:20px;" ButtonStyle="ButtonStyle.Primary" Click="@(()=>GetAll())" Icon="refresh"></RadzenButton>
@@ -30,9 +30,9 @@
                         Filter="@OnFilter"
                         AllowPaging="true"
                         PagerHorizontalAlign="HorizontalAlign.Left"
-                        Data="@customerOrderDtos"
-                        TItem="CustomerOrderDto"
-                        Style="background-color:#c6c3c6; --rz-cell-filter-width:20px"
+                        Data="@delays"
+                        TItem="DelayDto"
+                        Style="background-color:#c6c3c6; --rz-cell-filter-width:10px"
                         GridLines="DataGridGridLines.Both"
                         SelectionMode="DataGridSelectionMode.Single"
                         Density="Density.Compact"
@@ -40,25 +40,95 @@
                         >
             <Columns>
 
-                <RadzenDataGridColumn TItem="CustomerOrderDto" Filterable Property="CustomerOrderId" Title="Bobin Numarası" Width="50px" />
-                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="CustomerOrderStatusName" Title="Bobin Durumu" Width="50px" />
-                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="Name" Title="Kalınlık" Width="50px" />
-                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="Remark" Title="Genişlik" Width="50px" />
-                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="OrderNumber" Title="Ağırlık" Width="50px" />
-                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="OrderNumber" Title="Uzunluk" Width="50px" />
-                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="OrderNumber" Title="İç Çap" Width="50px" />
-                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="OrderNumber" Title="Dış Çap" Width="50px" />
-                <RadzenDataGridColumn TItem="CustomerOrderDto" Property="CustomerOrderId" Title="İşlemler" Width="50px">
+                <RadzenDataGridColumn TItem="DelayDto" Filterable Property="delay_id" Title="Duruş Numarası" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="delay_group_name" Title="Grup" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="delay_reason_name" Title="Nedeni" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="delay_class_name" Title="Sınıfı" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="remark" Title="Açıklaması" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="duration" Title="Süresi" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="accept_by" Title="Onaylayan" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="shift_id" Title="Vardiya" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="delay_id" Title="İşlemler" Width="50px">
                     <Template Context="data">
-                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="pageview" class="h-25 m-1" Click="@(()=>OpenCustomerOrderDlg(data.CustomerOrderId,"update"))" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="pageview" class="h-25 m-1" Click="@(()=>OpenDelayDlg(data.delay_id,"update"))" />
                         <RadzenButton ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="delete" class="h-25 m-1" Click="@(()=>DeleteCustomerOrder(data))" />
-                        <RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="list" class="h-25 m-1" Click="@(()=>ChangePdiStatus(data.CustomerOrderId))" />
                     </Template>
                 </RadzenDataGridColumn>
             </Columns>
             </RadzenDataGrid>
         </div>
         </RadzenCard>
+        <style scoped>
+           .rz-data-row{
+               white-space:nowrap !important;
+               max-height:50px !important;
+           }
+        </style>
 @code {
+    List<DelayDto> delays = new List<DelayDto>();
+    RadzenDataGrid<DelayDto>? radzenDataGrid;
+    [Inject]
+    DelayApi delayApi { get; set; }
+    public DelayDto lazyParams = new DelayDto { };
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAll();
 
+    }
+    async Task OpenDelayDlg(int? delayId, string dlgType)
+    {
+        DialogOptions dialogOptions = new DialogOptions
+            {
+                Width = "1000px",
+                Height = "230px",
+                Style="overflow: hidden; padding:0px;",
+                ShowTitle = true,
+            };
+
+        Dictionary<string, object> dict = new Dictionary<string, object>()
+        {
+            {"DelayId",delayId},
+            {"dlgType",dlgType}
+        };
+        var dialogTitle = (dlgType == "create" ? "Duruş Ekle" : (delayId + " Numaralı Duruşu Düzenle"));
+        var obj = await dialogService.OpenAsync<DelayDlg>(dialogTitle, dict, dialogOptions);
+        if (obj == true)
+        {
+            await GetAll();
+        }
+    }
+    async Task GetAll()
+    {
+        delays = await delayApi.GetDelayList();
+    }
+    async void DeleteCustomerOrder(DelayDto delay)
+    {
+        var result = await dialogService
+        .Confirm(delay.delay_id + " numaralı duruşunu silmek istiyor musunuz?", "Uyarı",
+        new ConfirmOptions { OkButtonText="Evet", CancelButtonText="Hayır" });
+        if (result == true)
+        {
+            await delayApi.DeleteDelay(delay);
+            await GetAll();
+        }
+
+    }
+    async void OnFilter(DataGridColumnFilterEventArgs<DelayDto> args)
+    {
+        lazyParams.Page = 1;
+        lazyParams.First = 0;
+        lazyParams.Rows = 20;
+        lazyParams.TotalRecords=20;
+        lazyParams.SortOrder =(int)(args.Column.SortOrder.Value);
+        lazyParams.SortField = args.FilterValue.ToString();
+        //await GetAll();
+    }
+    void RowRender(RowRenderEventArgs<DelayDto> args)
+    {
+        if (!string.IsNullOrEmpty(args.Data.accept_by))
+        {
+            args.Attributes.Add("style", $"background-color:#ACF672;");
+        }
+    }
 }
+

@@ -27,7 +27,7 @@
                         AllowAlternatingRows="false"
                         FilterMode="FilterMode.Simple"
                         AllowSorting="true"
-                        Filter="@OnFilter"
+                        
                         AllowPaging="true"
                         PagerHorizontalAlign="HorizontalAlign.Left"
                         Data="@customerOrderDtos"
@@ -64,10 +64,12 @@
     RadzenDataGrid<CustomerOrderDto>? radzenDataGrid;
     [Inject]
     CustomerOrderApi customerOrderApi { get; set; }
+    bool first = false;
     public CustomerOrderDto lazyParams = new CustomerOrderDto { };
     protected override async Task OnInitializedAsync()
     {
         await GetAll();
+        
 
     }
     async Task OpenCustomerOrderDlg(string customerOrderId, string dlgType)
@@ -85,11 +87,8 @@
             {"dlgType",dlgType}
         };
         var dialogTitle = (dlgType == "create" ? "Sipariş Ekle" : (customerOrderId + " Siparişi Düzenle"));
-        var obj = await dialogService.OpenAsync<PdiDlg>(dialogTitle, dict, dialogOptions);
-        if (obj == true)
-        {
-            await GetAll();
-        }
+        await dialogService.OpenAsync<PdiDlg>(dialogTitle, dict, dialogOptions);
+
     }
     async Task GetAll()
     {
@@ -103,11 +102,11 @@
         if (result == true)
         {
             await customerOrderApi.DeleteCustomerOrder(customerOrderId);
-            await GetAll();
+           await GetAll();
         }
 
     }
-    async Task ChangePdiStatus(string coilId)
+    async void ChangePdiStatus(string coilId)
     {
         DialogOptions dialogOptions = new DialogOptions
             {
@@ -123,11 +122,11 @@
         var result = await dialogService.OpenAsync<PdiStatusDlg>("Bobin Durumu Değiştir", dict, dialogOptions);
         if (result == true)
         {
-            await GetAll();
+           await GetAll();
         }
 
     }
-    async void OnFilter(DataGridColumnFilterEventArgs<CustomerOrderDto> args)
+    /*async void OnFilter(DataGridColumnFilterEventArgs<CustomerOrderDto> args)
     {
         lazyParams.Page = 1;
         lazyParams.First = 0;
@@ -136,7 +135,7 @@
         lazyParams.SortOrder =(int)(args.Column.SortOrder.Value);
         lazyParams.SortField = args.FilterValue.ToString();
         //await GetAll();
-    }
+    }*/
     void RowRender(RowRenderEventArgs<CustomerOrderDto> args)
     {
         if (args.Data.CustomerOrderStatusName == "Sipariş Oluşturuldu")
