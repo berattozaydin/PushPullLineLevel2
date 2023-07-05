@@ -3,7 +3,7 @@
 <div class="page">
     <main>
         <AuthorizeView>
-            <RadzenHeader Style="background-color:white;">
+            <RadzenHeader class="bg-white mb-1">
                 <div class="float-left">
                     <div class="container-1">
                         <div class="row">
@@ -14,9 +14,9 @@
                                 <NavMenu />
                             </div>
                             <div class="justify-content-end w-auto">
-                                <div style="margin-left:1.6rem; margin-top:0.1rem;">
+                                <div class="ms-3 pt-1"> 
                                     <!--<RadzenButton Style=" background-color:red; text-decoration-color:white;font-size:small;">»  </RadzenButton>-->
-                                    <RadzenButton Style=" background-color:#3a8aec; text-decoration-color:white;font-size:small;" Click="()=>LogOut()" Text="Çıkış Yap"></RadzenButton>
+                                    <RadzenButton Style="height:37px; background-color:#3a8aec; text-decoration-color:white;font-size:small;" Click="()=>LogOut()" Text="Çıkış Yap"></RadzenButton>
                                 </div>
                             </div>
                         </div>
@@ -26,7 +26,7 @@
             </RadzenHeader>
 
         </AuthorizeView>
-        <div class="content" style="margin-top:50px !important;">
+        <div class="content pt-5">
             @Body
         </div>
 

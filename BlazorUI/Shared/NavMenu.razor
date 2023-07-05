@@ -1,7 +1,7 @@
 ﻿
 <AuthorizeView>
     <Authorized>
-        <RadzenMenu class="radzenMenu">
+        <RadzenMenu class="radzenMenu navbar navbar-expand-lg navbar-light bg-light">
 
             <RadzenMenuItem Text="Anasayfa" Path="Traking"></RadzenMenuItem>
             <RadzenMenuItem @ref="radzenMenuItemRef" Text="Bobin Bilgileri">
@@ -12,6 +12,7 @@
             <RadzenMenuItem Text="Olay Günlükleri" Path="EvtAlm"></RadzenMenuItem>
             <RadzenMenuItem Text="Kaliteler"></RadzenMenuItem>
             <RadzenMenuItem Text="Reçeteler"></RadzenMenuItem>
+            <RadzenMenuItem Text="Sistem Ayarları"></RadzenMenuItem>
         </RadzenMenu>
     </Authorized>
     <NotAuthorized>
@@ -30,7 +31,7 @@
 
     .radzenMenu .rz-navigation-item-link {
         margin-left: 1.5rem;
-        width: 195px;
+        width: 155px;
         margin-top: auto;
         height: 40px;
         background-color: #3a8aec !important;
@@ -56,17 +57,13 @@
     }
 
         .rz-navigation-menu .rz-navigation-item-link {
-            width: 225px !important;
+            width: 175px !important;
             margin: auto !important;
             text-align: center !important;
+            color: white !important;
         }
-    .rz-menu-open .rzi {
-        background-color: #3a8aec !important;
-    }
 
-    .rz-menu-closed .rzi {
-        background-color: #3a8aec !important;
-    }
+
 </style>
 @code {
     private bool collapseNavMenu = true;

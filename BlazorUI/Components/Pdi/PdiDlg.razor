@@ -1,86 +1,70 @@
 ﻿@using BlazorDAL.Models;
 @using BlazorUI.Api;
 @inject DialogService dialogService;
-
-<RadzenTemplateForm Data="customerOrderDto">
+<fieldset class="border rounded-3 p-3">
+    <div class="row">
+      <legend class="col-form-label col-sm-2 pt-0">Bobin Bilgileri</legend>
     <RadzenRow Gap="2rem" Class="rz-p-0 rz-p-lg-4">
-        <RadzenColumn Size="8" SizeMD="5">
-            <RadzenStack>
-                <RadzenFieldset Text="Sipariş Bilgileri">
-                    <RadzenStack Gap="1rem">
-                        <RadzenRow AlignItems="AlignItems.Center">
-                            <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenLabel Text="Sipariş Adı" />
-                            </RadzenColumn>
-                            <RadzenColumn Size="12" SizeMD="8">
-                                <RadzenTextBox Style="width: 100%;" Name="CardNr" @bind-Value=customerOrderDto.Name />
-                            </RadzenColumn>
-                        </RadzenRow>
-                        <RadzenRow AlignItems="AlignItems.Center">
-                            <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenLabel Text="Sipariş Numarası" />
-                            </RadzenColumn>
-                            <RadzenColumn Size="12" SizeMD="8">
-                                <RadzenTextBox Style="width: 100%;" @bind-Value=customerOrderDto.OrderNumber />
-                            </RadzenColumn>
-                        </RadzenRow>
-                        <RadzenRow AlignItems="AlignItems.Center">
-                            <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenLabel Text="Sipariş Durumu" />
-                            </RadzenColumn>
-                            <RadzenColumn Size="12" SizeMD="8">
-                               <PdiStatusDropdwn @bind-pdiStatusId=customerOrderDto.CustomerOrderStatusId />
-                            </RadzenColumn>
-                        </RadzenRow>
+        <RadzenColumn Size="12" SizeMD="12">
+           <div class="container text-center">
 
-                        <RadzenRow AlignItems="AlignItems.Center">
-                            <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenLabel Text="Sipariş Açıklaması" />
-                            </RadzenColumn>
-                            <RadzenColumn Size="12" SizeMD="8">
-                                <RadzenTextArea Cols="20" Rows="4" @bind-Value="customerOrderDto.Remark" />
-                            </RadzenColumn>
-                        </RadzenRow>
-                        <RadzenRow AlignItems="AlignItems.Center">
-                            <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenLabel Text="Sipariş Oluşturma Tarihi" />
-                            </RadzenColumn>
-                            <RadzenColumn Size="12" SizeMD="8">
-                                <RadzenDatePicker TValue="DateTime?" Cols="20" Rows="4" @bind-Value="customerOrderDto.CreatedDate" />
-                            </RadzenColumn>
-                        </RadzenRow>
+              <div class="row">
+                    <div class="col-sm">
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Bobin Numarası</RadzenText>
+                        <RadzenTextBox @bind-Value=customerOrderDto.Name class="textBox"></RadzenTextBox>
+                    </div>
+                <div class="col-sm">
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Numarası</RadzenText>
+                    <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
+                </div>
+                <div class="col-sm">
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Numarası</RadzenText>
+                    <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
+                </div>
+                </div>
+                   <div class="row">
+                    <div class="col-sm">
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Bobin Numarası</RadzenText>
+                        <RadzenTextBox @bind-Value=customerOrderDto.Name class="textBox"></RadzenTextBox>
+                    </div>
+                <div class="col-sm">
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Numarası</RadzenText>
+                    <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
+                </div>
+                <div class="col-sm">
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Numarası</RadzenText>
+                    <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
+                </div>
+                </div>
+                   <div class="row">
+                    <div class="col-sm">
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Bobin Numarası</RadzenText>
+                        <RadzenTextBox @bind-Value=customerOrderDto.Name class="textBox"></RadzenTextBox>
+                    </div>
+                <div class="col-sm">
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Numarası</RadzenText>
+                    <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
+                </div>
+                <div class="col-sm">
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Numarası</RadzenText>
+                    <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
+                </div>
+                </div>
 
-                    </RadzenStack>
-                </RadzenFieldset>
-            </RadzenStack>
+           </div>
         </RadzenColumn>
-        <RadzenColumn Size="8" SizeMD="7">
-            <RadzenStack>
-                <RadzenFieldset Text="Bobin Bilgileri">
-                    <RadzenStack Gap="1rem">
-
-                        <RadzenRow AlignItems="AlignItems.Center">
-                            <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenLabel Text="ScheduleId" />
-                            </RadzenColumn>
-                            <RadzenColumn Size="12" SizeMD="8">
-                                <RadzenTextBox Disabled="true" Placeholder="ScheduleId" Style="width: 100%;" />
-                            </RadzenColumn>
-                        </RadzenRow>
-
-                    </RadzenStack>
-                </RadzenFieldset>
-
-            </RadzenStack>
-        </RadzenColumn>
-
-
     </RadzenRow>
-    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="1rem" Class="rz-mt-8 rz-mb-4">
-        <RadzenButton Icon="done" ButtonStyle="ButtonStyle.Success" class="dlgBtn" Click="@SaveCustomerOrder" Text="Kaydet" />
-        <RadzenButton ButtonStyle="ButtonStyle.Danger" class="dlgBtn" Click="@CloseDialog" Text="İptal" />
-    </RadzenStack>
-</RadzenTemplateForm>
+    </div>
+    </fieldset>
+<div class="row justify-content-end mt-3 mr-1">
+   <div class="col-2">
+    <RadzenButton Icon="done" Style="background-color:blue;color:white" class="dlgBtn" Click="@SaveCustomerOrder" Text="Kaydet" />
+</div>
+    <div class="col-2">
+    <RadzenButton Style="color:white;background-color:red;" ButtonStyle="ButtonStyle.Danger" class="dlgBtn" Click="@CloseDialog" Text="İptal" />
+    </div>
+</div>
+
 <style>
     .dlgBtn {
         border: 1px 2px;
