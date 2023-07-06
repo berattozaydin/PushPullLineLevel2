@@ -1,7 +1,8 @@
-﻿@using BlazorDAL.Models;
-@using BlazorUI.Api;
+﻿@using BlazorUI.Api;
+@using BlazorDAL.Models;
+@using Microsoft.AspNetCore.SignalR.Client;
 @inject DialogService dialogService;
-<div class="container text-center">
+<!--<div class="container text-center">
     <div class="row">
         <div class="col justify-content-center">
             <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Bobin Numarası</RadzenText>
@@ -22,25 +23,12 @@
             <RadzenButton ButtonStyle="ButtonStyle.Danger" Click="(()=>CloseDlg())" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="delete" class="m-1 btn" Text="İptal" />
         </div>
     </div>
-</div>
+</div>-->
 @code {
-    [Parameter]
-    public string coilId { get; set; } = "";
-    public CustomerOrderDto customerOrderDto = new CustomerOrderDto { };
-    [Inject]
-    CustomerOrderApi customerOrderApi { get; set; }
-    protected override async Task OnInitializedAsync()
+    private string shiftName = "";
+    private HubConnection hubConnection;
+    void ChangeShiftForeman()
     {
-        customerOrderDto = await customerOrderApi.GetCustomerOrder(coilId);
-    }
-    async void Save()
-    {
-        await customerOrderApi.ChangePdiStatus(customerOrderDto);
-        dialogService.Close(true);
-    }
-    void CloseDlg()
-    {
-        dialogService.Close(true);
+     
     }
 }
-

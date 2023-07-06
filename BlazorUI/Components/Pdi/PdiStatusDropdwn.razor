@@ -5,7 +5,6 @@
                 @bind-Value=pdiStatusId
                 Data=@customerOrderStatusList Style="border-radius:10px !important;height:40px !important;width:200px !important;">
 </RadzenDropDown>
-
 @code {
     private int _pdiStatusId;
     [Parameter]
@@ -27,7 +26,6 @@
     [Parameter]
     public EventCallback<int> pdiStatusIdChanged { get; set; }
     IEnumerable<CustomerOrderStatus> customerOrderStatusList;
-    //List<string> customerOrderStatusList;
     [Inject]
     CustomerOrderApi itemApi { get; set; }
     protected override async Task OnInitializedAsync()

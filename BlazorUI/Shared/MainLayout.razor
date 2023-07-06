@@ -1,5 +1,8 @@
-﻿@inherits LayoutComponentBase
-
+﻿@using BlazorDAL.Models;
+@using BlazorUI.StateStore;
+@using Microsoft.AspNetCore.SignalR.Client;
+@inherits LayoutComponentBase
+@inject StateService stateService;
 <div class="page">
     <main>
         <AuthorizeView>
@@ -10,12 +13,12 @@
                             <div class="px-1 w-auto">
                                 <img src="/Image/tp-logo.png" alt="teknoplanjpg" width="275px" height="40px" />
                             </div>
-                            <div class="justify-content-center w-auto" >
+                            <div class="justify-content-center w-auto">
                                 <NavMenu />
                             </div>
                             <div class="justify-content-end w-auto">
-                                <div class="ms-3 pt-1"> 
-                                    <!--<RadzenButton Style=" background-color:red; text-decoration-color:white;font-size:small;">»  </RadzenButton>-->
+                                <div class="ms-3 pt-1">
+                                    <BlazorUI.Components.ActiveForeman></BlazorUI.Components.ActiveForeman>
                                     <RadzenButton Style="height:37px; background-color:#3a8aec; text-decoration-color:white;font-size:small;" Click="()=>LogOut()" Text="Çıkış Yap"></RadzenButton>
                                 </div>
                             </div>
@@ -29,7 +32,9 @@
         <div class="content pt-5">
             @Body
         </div>
-
+        <RadzenFooter Style="height:20px;">
+            <p class="position-relative lh-1">@activeForeman</p>
+        </RadzenFooter>
 
     </main>
 </div>
@@ -37,6 +42,51 @@
 @code {
     [Inject]
     NavigationManager NavigationManager { get; set; }
+    private HubConnection hubConnection;
+    private string _activeForeman;
+    public string activeForeman
+    {
+        get { return _activeForeman; }
+        set
+        {
+            if (value == _activeForeman) return;
+            _activeForeman = value;
+            StateHasChanged();
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        string pn = "/global";
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl("http://localhost:5213/websocket?pagename=" + pn)
+        .WithAutomaticReconnect()
+        .Build();
+        await StartSignalRSocketAsync();
+    }
+    private async Task StartSignalRSocketAsync()
+    {
+        try
+        {
+            await hubConnection.StartAsync();
+            ReceiveMessage();
+        }
+        catch (Exception ex)
+        {
+            
+        }
+    }
+    private void ReceiveMessage()
+    {
+        hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+      {
+          stateService.OnStateChange += StateHasChanged;
+          stateService.SetActiveForeman(message);
+      });
+    }
+    public void Dispose()
+    {
+        stateService.OnStateChange -= StateHasChanged;
+    }
     async void LogOut()
     {
         NavigationManager.NavigateTo("logout");

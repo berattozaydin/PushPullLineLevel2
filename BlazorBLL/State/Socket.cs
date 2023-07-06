@@ -22,15 +22,19 @@ namespace BlazorBLL.State
             var pageName = context.Request.Query["pagename"];
             if (pageName.ToString() =="/home")
                 await SendMessageAsync("", "User Connected");
+            if (pageName.ToString() =="/global")
+                await SendMessageAsync("", "User Connected");
             await base.OnConnectedAsync();
         }
+  
 
         public async Task SendMessageAsync(string user, string message)
         {
             var res = mgr.Db.Fetch<EvtAlmDto>("SELECT * FROM event_alarm");
+           
             while (true)
             {
-                await Clients.All.SendAsync("ReceiveMessage", user, res);
+                await Clients.All.SendAsync("ReceiveMessage", user, "activeForeman");
                 await Task.Delay(2000);
             }
         }

@@ -93,3 +93,15 @@ RadzenDataGridColumn {
 .customDialog {
     border-radius: 20px;
 }
+.btn {
+    padding: 2px;
+    width: 8rem;
+    height: 2rem;
+    border-radius: 10px;
+}
+
+.textBox {
+    border-radius: 10px !important;
+    height: 2.4rem !important;
+    width: 200px !important;
+}

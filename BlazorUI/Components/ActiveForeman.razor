@@ -1,0 +1,23 @@
+﻿@using BlazorDAL;
+@using BlazorUI.Api;
+@using BlazorUI.StateStore;
+@implements IDisposable
+@inject StateService stateService;
+<RadzenButton Style=" background-color:red; text-decoration-color:white;font-size:small;"> @stateService.ActiveForeman </RadzenButton>
+
+@code {
+    private string _activeForemanSet = "";
+    public string activeForemanSet
+    {
+        get { return _activeForemanSet; }
+        set { if (_activeForemanSet == value) return; _activeForemanSet = value; }
+    } 
+    protected override async Task OnInitializedAsync()
+    {
+        stateService.OnStateChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        stateService.OnStateChange -= StateHasChanged;
+    }
+}

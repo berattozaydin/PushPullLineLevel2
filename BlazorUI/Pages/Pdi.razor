@@ -27,7 +27,7 @@
                         AllowAlternatingRows="false"
                         FilterMode="FilterMode.Simple"
                         AllowSorting="true"
-                        
+                        Filter="OnFilter"
                         AllowPaging="true"
                         PagerHorizontalAlign="HorizontalAlign.Left"
                         Data="@customerOrderDtos"
@@ -126,7 +126,7 @@
         }
 
     }
-    /*async void OnFilter(DataGridColumnFilterEventArgs<CustomerOrderDto> args)
+    async void OnFilter(DataGridColumnFilterEventArgs<CustomerOrderDto> args)
     {
         lazyParams.Page = 1;
         lazyParams.First = 0;
@@ -135,7 +135,7 @@
         lazyParams.SortOrder =(int)(args.Column.SortOrder.Value);
         lazyParams.SortField = args.FilterValue.ToString();
         //await GetAll();
-    }*/
+    }
     void RowRender(RowRenderEventArgs<CustomerOrderDto> args)
     {
         if (args.Data.CustomerOrderStatusName == "Sipariş Oluşturuldu")

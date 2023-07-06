@@ -3,7 +3,7 @@
 @inject DialogService dialogService;
 <fieldset class="border rounded-3 p-3">
     <div class="row">
-      <legend class="col-form-label col-sm-2 pt-0">Bobin Bilgileri</legend>
+     <legend class="col-form-label col-sm-2 pt-0">Bobin Bilgileri</legend>
     <RadzenRow Gap="2rem" Class="rz-p-0 rz-p-lg-4">
         <RadzenColumn Size="12" SizeMD="12">
            <div class="container text-center">
@@ -46,8 +46,8 @@
                     <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
                 </div>
                 <div class="col-sm">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Numarası</RadzenText>
-                    <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Durumu</RadzenText>
+                    <PdiStatusDropdwn @bind-pdiStatusId=customerOrderDto.CustomerOrderStatusId ></PdiStatusDropdwn>
                 </div>
                 </div>
 
@@ -56,7 +56,7 @@
     </RadzenRow>
     </div>
     </fieldset>
-<div class="row justify-content-end mt-3 mr-1">
+<div class="row justify-content-end mt-3 mr-1 position-relative bottom-0">
    <div class="col-2">
     <RadzenButton Icon="done" Style="background-color:blue;color:white" class="dlgBtn" Click="@SaveCustomerOrder" Text="Kaydet" />
 </div>

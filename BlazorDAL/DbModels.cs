@@ -412,7 +412,7 @@ namespace BlazorDAL
     [TableName("delay")]
     [PrimaryKey("delay_id",AutoIncrement =true)]
     [ExplicitColumns]
-    public class delay : Record<event_alarm>
+    public class delay : Record<delay>
     {
         [Column]
         public int delay_id
@@ -517,5 +517,35 @@ namespace BlazorDAL
             set { _remark = value; OnPropertyChanged(); }
         }
         string _remark;
+    }
+
+    [TableName("line_data")]
+    [PrimaryKey("id", AutoIncrement = true)]
+    [ExplicitColumns]
+    public class line_data : Record<line_data>
+    {
+        [Column]
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; OnPropertyChanged(); }
+        }
+        int _id;
+
+        [Column]
+        public string log_speed
+        {
+            get { return _log_speed; }
+            set { _log_speed = value; OnPropertyChanged(); }
+        }
+        string _log_speed;
+
+        [Column]
+        public string active_foreman
+        {
+            get { return _active_foreman; }
+            set { _active_foreman = value; OnPropertyChanged(); }
+        }
+        string _active_foreman;
     }
 }

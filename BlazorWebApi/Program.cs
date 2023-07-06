@@ -47,6 +47,7 @@ builder.Services.AddScoped<CustomerOrderManager>();
 builder.Services.AddScoped<AuthManager>();
 builder.Services.AddScoped<EvtAlmManager>();
 builder.Services.AddScoped<DelayManager>();
+builder.Services.AddScoped<ShiftManager>();
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
     builder.AllowAnyOrigin()
