@@ -20,20 +20,26 @@
     {
         try
         {
-            ClearLocalStorage();
             (AuthStateProvider as AuthStateProvider).UserLogout();
             httpClient.DefaultRequestHeaders.Authorization = null;
+            ClearLocalStorage();
             NavigationManager.NavigateTo("login");
             await Task.CompletedTask;
         }
         catch(Exception ex){ }
-    
+
     }
     async void ClearLocalStorage()
     {
-        await LocalStorageService.ClearAsync();
+        /*stateService.OnStateChange += StateHasChanged;
+        stateService.ClearAuthentication();*/
+         await LocalStorageService.ClearAsync();
         await LocalStorageService.RemoveItemAsync("token");
         await LocalStorageService.RemoveItemAsync("email");
         await LocalStorageService.RemoveItemAsync("userName");
     }
+    /*public void Dispose()
+    {
+        stateService.OnStateChange -= StateHasChanged;
+    }*/
 }

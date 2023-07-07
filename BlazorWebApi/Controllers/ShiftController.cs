@@ -24,5 +24,12 @@ namespace BlazorWebApi.Controllers
             var res = shiftManager.GetShift();
             return res;
         }
+
+        [HttpPost]
+        public ReturnResult SetShiftForeman(Account accountDto) 
+        {
+            var res = shiftManager.SetShiftForeman(accountDto);
+            return res;
+        }
     }
 }

@@ -17,5 +17,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Blazor.Core\Blazor.Core.csproj" />
 	  <ProjectReference Include="..\BlazorBLL\BlazorBLL.csproj" />
+	  <ProjectReference Include="..\BlazorUI\BlazorUI.csproj" />
 	</ItemGroup>
 </Project>

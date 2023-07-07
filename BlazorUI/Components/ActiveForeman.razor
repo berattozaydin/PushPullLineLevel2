@@ -10,7 +10,7 @@
     public string activeForemanSet
     {
         get { return _activeForemanSet; }
-        set { if (_activeForemanSet == value) return; _activeForemanSet = value; }
+        set { if (_activeForemanSet == value) return; _activeForemanSet = value; StateHasChanged(); }
     } 
     protected override async Task OnInitializedAsync()
     {

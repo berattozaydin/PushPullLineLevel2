@@ -2,6 +2,7 @@ using Blazor.Core.Src;
 using BlazorBLL.Managers;
 using BlazorBLL.Middleware;
 using BlazorBLL.State;
+using BlazorUI.StateStore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -48,6 +49,9 @@ builder.Services.AddScoped<AuthManager>();
 builder.Services.AddScoped<EvtAlmManager>();
 builder.Services.AddScoped<DelayManager>();
 builder.Services.AddScoped<ShiftManager>();
+builder.Services.AddScoped<UserManager>();
+
+builder.Services.AddScoped<StateService>();
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
     builder.AllowAnyOrigin()

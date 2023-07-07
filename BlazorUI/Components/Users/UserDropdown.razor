@@ -1,0 +1,37 @@
+﻿@using BlazorDAL;
+@using BlazorUI.Api;
+<RadzenDropDown TextProperty="Name"
+                ValueProperty="Id"
+                @bind-Value=userId
+                Data=@userList Style="border-radius:10px !important;height:40px !important;width:200px !important;">
+</RadzenDropDown>
+
+@code {
+    private int _userId;
+    [Parameter]
+    public int userId
+    {
+        get
+        {
+            return _userId;
+        }
+        set
+        {
+            if (_userId == value) return;
+            _userId = value;
+            userIdChanged.InvokeAsync(value);
+
+        }
+    }
+
+    [Parameter]
+    public EventCallback<int> userIdChanged { get; set; }
+    IEnumerable<Account> userList;
+    [Inject]
+    UserApi userApi { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        userList = await userApi.GetUserList();
+
+    }
+}

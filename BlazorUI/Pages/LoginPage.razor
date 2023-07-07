@@ -5,9 +5,9 @@
 @using BlazorUI.Src;
 @using BlazorUI.StateStore;
 @using Microsoft.AspNetCore.Authorization;
-
 @inject NotificationService NotificationService
 @attribute [AllowAnonymous]
+
 <PageTitle>Seviye-2 Giriş Yap</PageTitle>
 <div class="container">
     <div class="d-flex justify-content-center mt-5 py-5">
@@ -106,8 +106,8 @@
         if (logingUser.isSuccess == 1)
         {
             ChangeAlert("Giriş Yapılıyor...", AlertStyle.Success);
-            await Task.Delay(500);
-            await SaveLocalStorage(logingUser.token, logingUser.email, logingUser.username);
+            await Task.Delay(300);
+            SaveLocalStorage(logingUser.token, logingUser.email, logingUser.username);
             (authenticationStateProvider as AuthStateProvider).UserLogin(logingUser.email);
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", logingUser.token);
             navigationManager.NavigateTo("/Pdi");
@@ -120,11 +120,16 @@
             navigationManager.NavigateTo("/login");
         }
     }
-    async Task SaveLocalStorage(string token, string eMail, string userName)
+    async void SaveLocalStorage(string token, string eMail, string userName)
     {
         await localStorageService.SetItemAsStringAsync("token", token);
         await localStorageService.SetItemAsStringAsync("email", eMail);
         await localStorageService.SetItemAsStringAsync("userName", userName);
+        /*stateService.OnStateChange += StateHasChanged;
+        stateService.SetAuthentication(token, userName, eMail);*/
+        /*await jsRuntime.InvokeVoidAsync("localStorage.setItem","token", token);
+        await jsRuntime.InvokeVoidAsync("localStorage.setItem", "eMail", eMail);
+        await jsRuntime.InvokeVoidAsync("localStorage.setItem", "userName", userName);*/
     }
     void ChangeAlert(string changeAlertMessage, AlertStyle changeAlertStyle)
     {
@@ -133,5 +138,9 @@
         isActivatedUser = true;
         StateHasChanged();
     }
+    /*public void Dispose()
+    {
+        stateService.OnStateChange -= StateHasChanged;
+    }*/
 }
 
