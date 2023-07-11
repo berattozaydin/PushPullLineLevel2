@@ -1,7 +1,7 @@
 ﻿@inherits SvgBase
 
 <SvgBase  Scale="Scale">
-    <path id="@Id" style="stroke:@Color;stroke-width:@Width" d="M @(Length + X),@Y H @X" />
+    <path id="@Id" style="stroke:@Color;stroke-width:@Width" d="M @SvgUtility.FloatToStringWithDot(Length + X),@SvgUtility.FloatToStringWithDot(Y) H @SvgUtility.FloatToStringWithDot(X)" />
 </SvgBase>
 
 
