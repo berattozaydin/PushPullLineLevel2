@@ -1,0 +1,34 @@
+﻿@inherits SvgBase
+
+<SvgBase X="X" Y="Y" Angle="Angle" Scale="Scale">
+
+    <SvgImage X="0" Y="0" Width="7.5" Height="9.4" Src="image/water.gif" />
+
+    <g id="g34085" transform="translate(-1.2352517,-1.4313711)"> 
+        <SvgRoll X="2.5f" Y="2.1f" Scale="0.5f" IsRotatingLeft="false"></SvgRoll> 
+        <SvgRoll X="2.5f" Y="5.4f" Scale="0.5f" IsRotatingLeft="true"></SvgRoll> 
+   
+        <rect style="fill:none;fill-opacity:1;stroke:#181818;stroke-width:0.223785;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+              id="rect34079"
+              width="7.2087851"
+              height="9.3297844"
+              x="1.3471444"
+              y="1.5432636" />
+        <text x="2.5"
+              y="13.7"
+              font-family="sans-serif"
+              font-size="2.82222px"
+              font-weight="bold"
+              stroke-width="0.264579"
+              style="line-height:1.25"
+              xml:space="preserve"
+              id="text34083">
+            @Text
+          </text>
+    </g>
+</SvgBase>
+
+
+@code {
+    [Parameter] public string Text { get; set; } = "TANK";
+}

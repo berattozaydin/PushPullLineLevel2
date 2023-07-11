@@ -1,23 +1,46 @@
 ﻿@inherits SvgBase
 <SvgBase X="X" Y="Y" Angle="Angle" Scale="Scale">
-    <text x="8.5" y="15" font-family="sans-serif" font-size="2.6168px" font-weight="bold" stroke-width=".24532" text-align="center" text-anchor="middle" style="line-height:1.25" xml:space="preserve">             
-        @Text
-    </text>
-    <rect x=".24469" y=".2447" width="15.934" height="11.723" fill="none" stroke="#000" stroke-width=".4" />
-    <g fill="#7b7b7b" stroke="#000" stroke-width=".82109" style="paint-order:stroke fill markers">
-        <ellipse cx="3.7057" cy="4.2903" rx="0.8" ry="0.8" />
-        <ellipse cx="6.7631" cy="4.2903" rx="0.8" ry="0.8" />
-        <ellipse cx="9.6111" cy="4.2903" rx="0.8" ry="0.8" />
-        <ellipse cx="12.417" cy="4.2903" rx="0.8" ry="0.8" />
-        <ellipse cx="2.1486" cy="8.4156" rx="0.8" ry="0.8" />
-        <ellipse cx="5.206" cy="8.4156" rx="0.8" ry="0.8" />
-        <ellipse cx="8.0539" cy="8.4156" rx="0.8" ry="0.8" />
-        <ellipse cx="10.86" cy="8.4156" rx="0.8" ry="0.8" />
-        <ellipse cx="13.666" cy="8.4156" rx="0.8" ry="0.8" />
+
+    <text x="1.5" y="12">@Text</text>
+    <g transform="translate(-12.149 -69.177)">
+        <g id="PreStr" transform="matrix(.46666 0 0 .46666 -131.01 -38.892)" stroke-width=".56697">
+            <rect x="307.73" y="231.75" width="15.012" height="20.038" fill="none" stroke="#000" stroke-miterlimit="3.9" stroke-width=".333" style="paint-order:stroke fill markers" />
+            <g transform="matrix(.57165 0 0 .57165 51.942 139.77)" fill="#7b7b7b" stroke="#000" stroke-width="1.4877">
+                <circle cx="453.82" cy="175.51" r="1.3393" style="paint-order:stroke fill markers" />
+                <circle cx="458.59" cy="175.51" r="1.3393" style="paint-order:stroke fill markers" />
+                <circle cx="463.35" cy="175.51" r="1.3393" style="paint-order:stroke fill markers" />
+                <circle cx="468.12" cy="175.51" r="1.3393" style="paint-order:stroke fill markers" />
+                <circle cx="451.18" cy="182.52" r="1.3393" style="paint-order:stroke fill markers" />
+                <circle cx="455.94" cy="182.52" r="1.3393" style="paint-order:stroke fill markers" />
+                <circle cx="460.71" cy="182.52" r="1.3393" style="paint-order:stroke fill markers" />
+                <circle cx="465.47" cy="182.52" r="1.3393" style="paint-order:stroke fill markers" />
+                <circle cx="470.24" cy="182.52" r="1.3393" style="paint-order:stroke fill markers" />
+            </g>
+            <g fill="#000" stroke="#000" stroke-linecap="round">
+                <g stroke-width=".56697">
+                    <path d="m308 239.19h14.478" style="paint-order:fill markers stroke" />
+                    <path d="m322.5 245.01h-14.512" style="paint-order:fill markers stroke" />
+                    <path d="m308 236.08h14.478" style="paint-order:fill markers stroke" />
+                    <path d="m322.49 248.04h-14.512" style="paint-order:fill markers stroke" />
+                </g>
+                <g stroke-width=".45358">
+                    <path d="m309.83 238.86v-2.527" style="paint-order:fill markers stroke" />
+                    <path d="m312.55 239.08v-2.75" style="paint-order:fill markers stroke" />
+                    <path d="m315.23 239.19v-2.8588" style="paint-order:fill markers stroke" />
+                    <path d="m318.03 239.08v-2.75" style="paint-order:fill markers stroke" />
+                    <path d="m320.77 238.86v-2.527" style="paint-order:fill markers stroke" />
+                    <path d="m309.83 245.24v2.527" style="paint-order:fill markers stroke" />
+                    <path d="m312.54 245.02v2.75" style="paint-order:fill markers stroke" />
+                </g>
+                <path d="m315.23 245.22v2.5725" stroke-width=".43026" style="paint-order:fill markers stroke" />
+                <path d="m318.02 245.02v2.75" stroke-width=".45358" style="paint-order:fill markers stroke" />
+                <path d="m320.76 245.24v2.527" stroke-width=".45358" style="paint-order:fill markers stroke" />
+            </g>
+        </g>
     </g>
 </SvgBase>
 
 
 @code {
-    [Parameter] public string Text { get; set; } = "Pre-Str";
+    [Parameter] public string Text { get; set; } = "Pre-Str"; 
 }

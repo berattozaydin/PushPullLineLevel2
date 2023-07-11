@@ -1,0 +1,55 @@
+﻿@inherits SvgBase
+
+<SvgBase X="X" Y="Y" Angle="Angle" Scale="Scale" >
+      
+
+    @if (HasBackground)
+    {
+        <SvgImage X="0" Y="0" Width="18" Height="9.4" Src="image/acid.gif" /> 
+    }
+
+    @if (RollTemplate.Contains('1'))
+    {
+        <SvgRoll X="1.0f" Y="0.7f" Scale="0.5f" IsRotatingLeft="false"></SvgRoll>
+
+    }
+
+    @if (RollTemplate.Contains('2'))
+    {
+        <SvgRoll X="7.0f" Y="0.7f" Scale="0.5f" IsRotatingLeft="false"></SvgRoll>
+    }
+
+    @if (RollTemplate.Contains('3'))
+    {
+        <SvgRoll X="13.0f" Y="0.7f" Scale="0.5f" IsRotatingLeft="false"></SvgRoll>
+    }
+
+    @if (RollTemplate.Contains('4'))
+    {
+        <SvgRoll X="1.0f" Y="4f" Scale="0.5f" IsRotatingLeft="true"></SvgRoll>
+
+    }
+
+    @if (RollTemplate.Contains('5'))
+    {
+        <SvgRoll X="7.0f" Y="4f" Scale="0.5f" IsRotatingLeft="true"></SvgRoll>
+    }
+
+    @if (RollTemplate.Contains('6'))
+    {
+        <SvgRoll X="13.0f" Y="4f" Scale="0.5f" IsRotatingLeft="true"></SvgRoll>
+    }
+
+
+    <rect x="0" y="0" width="17.941" height="9.2371" fill="none" stop-color="#000000" stroke="#181818" stroke-width=".21037" />
+    <text x="4" y="12.5" font-family="sans-serif" font-size="2.8222px" font-weight="bold" stroke-width=".26458" style="line-height:1.25" xml:space="preserve">
+        @Text
+  </text>
+</SvgBase>
+
+
+@code {
+    [Parameter] public string Text { get; set; } = "PRE-WASH";
+    [Parameter] public string RollTemplate { get; set; } = "123456";
+    [Parameter] public bool HasBackground { get; set; } = true;
+}

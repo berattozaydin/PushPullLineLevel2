@@ -1,0 +1,33 @@
+﻿@inherits SvgBase
+
+<SvgBase X="X" Y="Y" Angle="Angle" Scale="Scale">
+    <g>
+        <SvgRoll X="-1.0f" Y="-1.3f" Scale=0.8f IsRotatingLeft=@false IsRotating=@IsRotating></SvgRoll>
+        <SvgRoll X="-1.0f" Y="3.6f" Scale="0.8f" IsRotating=@IsRotating></SvgRoll>
+
+        <SvgRoll X="5.0f" Y="-1.3f" Scale=0.8f IsRotatingLeft=@false IsRotating=@IsRotating></SvgRoll>
+        <SvgRoll X="5.0f" Y="3.6f" Scale="0.8f" IsRotating=@IsRotating></SvgRoll>
+
+        <rect style="fill:none;fill-opacity:1;stroke:#181818;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+              id="rect34079"
+              width="12"
+              height="11" />
+
+        <text x="2"
+              y="14"
+              font-family="sans-serif"
+              font-size="2.82222px"
+              font-weight="bold"
+              stroke-width="0.264579"
+              style="line-height:1.25" 
+              id="text34083">
+            @Text
+          </text>
+    </g>
+</SvgBase>
+
+
+@code {
+    [Parameter] public string Text { get; set; } = "STR";
+    [Parameter] public bool IsRotating { get; set; } = false;
+}

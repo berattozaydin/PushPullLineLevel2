@@ -1,0 +1,20 @@
+﻿@inherits SvgBase
+
+<SvgBase X="X" Y="Y" Angle="Angle" Scale="Scale">
+    <g transform="translate(-1.2034 -1.5914)">
+        <rect x="1.3357" y="5.236" width="5.7994" height="9.3526" fill="none" stop-color="#000000" stroke="#181818" stroke-width=".26458" />
+        <text class="svg-text" x="1.3236648" y="17.396147">
+            @Text
+        </text>
+        <g stroke-width=".26458">
+            <rect x="2.8604" y="2.8616" width="2.7502" height="2.3745" fill="none" stop-color="#000000" stroke="#181818" />
+            <path d="m3.568 2.8616v-1.1379" fill="#3f3f3f" stroke="#000" stroke-linecap="round" style="paint-order:fill markers stroke" />
+            <path d="m4.9127 2.8616v-1.1379" fill="#3f3f3f" stroke="#000" stroke-linecap="round" style="paint-order:fill markers stroke" />
+        </g>
+    </g>
+</SvgBase>
+
+
+@code {
+    [Parameter] public string Text { get; set; } = "OILER";
+}

@@ -1,5 +1,4 @@
-﻿@using Utilities;
-<foreignObject id="@Id" transform="@SvgUtility.GetTransform(X, Y, Angle, Scale)" width="@Width" height="@Height">
+﻿<foreignObject id="@Id" transform="@SvgUtility.GetTransform(X, Y, Angle, Scale)" width="@Width" height="@Height" @attributes=@Attrs>
     <body xmlns="http://www.w3.org/1999/xhtml">
         @ChildContent
     </body>
@@ -7,13 +6,14 @@
 
 @code {
     [Parameter] public string? Id { get; set; }
-    [Parameter] public Single X { get; set; } = 0;
-    [Parameter] public Single Y { get; set; } = 0;
+    [Parameter] public float X { get; set; } = 0;
+    [Parameter] public float Y { get; set; } = 0;
     [Parameter] public string Width { get; set; } = "100%";
     [Parameter] public string Height { get; set; } = "100%";
-    [Parameter] public Single Angle { get; set; } = 0;
-    [Parameter] public Single Scale { get; set; } = 1;
+    [Parameter] public float Angle { get; set; } = 0;
+    [Parameter] public float Scale { get; set; } = 1;
 
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? Attrs { get; set; }
 
 }

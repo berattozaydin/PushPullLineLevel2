@@ -1,0 +1,12 @@
+﻿@inherits SvgBase
+
+<SvgBase X="X" Y="Y" Angle="Angle" Scale="Scale">
+    <image width="@Width" height="@Height" href="@Src" preserveAspectRatio="@PreserveAspectRatio" />
+</SvgBase>
+
+@code {
+    [Parameter] public string? Src { get; set; }
+    [Parameter] public string? Height { get; set; }
+    [Parameter] public string? Width { get; set; }
+    [Parameter] public string PreserveAspectRatio { get; set; } = "none";
+}

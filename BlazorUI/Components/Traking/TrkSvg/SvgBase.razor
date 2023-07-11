@@ -1,6 +1,4 @@
-﻿@using Utilities;
-
-<g id="@Id" transform="@SvgUtility.GetTransform(X, Y, Angle, Scale)" @attributes=@Attrs>
+﻿<g class="svg-text" id="@Id" transform="@SvgUtility.GetTransform(X, Y, Angle, Scale)" @attributes=@Attrs>
     @ChildContent
 </g>
 
@@ -13,5 +11,5 @@
     [Parameter] public Single Scale { get; set; } = 1;
 
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? Attrs { get; set; }
+    [Parameter(CaptureUnmatchedValues =true)] public Dictionary<string, object>? Attrs { get; set; }
 }

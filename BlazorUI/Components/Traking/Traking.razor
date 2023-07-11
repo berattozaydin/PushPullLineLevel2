@@ -5,12 +5,16 @@
 
 
 <div class="row">
-    <div class="col-4 col-md-2">
-        <RadzenAlert Color="ThemeColor.Warning">X: @Round(X) Y: @Round(Y)</RadzenAlert>
+   @* <div class="col-4 col-md-2">
+        <HxAlert Color="ThemeColor.Warning">X: @Round(X) Y: @Round(Y)</HxAlert>
     </div>
     <div class="col-4 col-md-2">
-        <RadzenSwitch Text="Guide Lines" @bind-Value="openGuideLines" />
+        <HxSwitch Text="Guide Lines" @bind-Value="openGuideLines" />
+    </div>*@
+    
+    <div class="col-2 col-md-1"> 
     </div>
+
     <div class="col-4 col-md-2">
         Strip Counter: <h3>@stripCounter</h3>
     </div>
@@ -20,17 +24,17 @@
     </div>
 
     <div class="col-2 col-md-1">
-        <RadzenTextBox Label="Coil No" @bind-Value="@stripModel.coilNo" />
+        <HxInputText Label="Coil No" @bind-Value="@stripModel.coilNo" />
     </div>
-     <div class="col-2 col-md-1">
-        <RadzenNumeric Label="Coil No" @bind-Value="@stripModel.len" />
+    <div class="col-2 col-md-1">
+        <HxInputNumber Label="Length" @bind-Value="@stripModel.len" />
     </div>
-         <div class="col-2 col-md-1">
-        <RadzenNumeric Label="Coil No" @bind-Value="@stripModel.schedule" />
+    <div class="col-2 col-md-1">
+        <HxInputNumber Label="Schedule" @bind-Value="@stripModel.schedule" />
     </div>
     <div class="col-2 col-md-1">
         <div class="mt-3">
-            <RadzenButton Color="ThemeColor.Success" Text="Add" Click="()=>AddNewCoil()" />
+            <HxButton Color="ThemeColor.Success" Text="Add" @onclick="AddNewCoil" />
         </div>
     </div>
 
@@ -38,11 +42,11 @@
 
 
 @*
-    style="min-width: 1366px; min-height: 768px; width: 100%; height: 92vh; background-color: lightgray"
+     style="min-width: 1366px; min-height: 768px; width: 1920px; height:1080px;  background-color: #efefef"
 *@
 <svg version="1.1" viewBox="0 0 384 216" xmlns="http://www.w3.org/2000/svg"
-     style="min-width: 1366px; min-height: 768px; width: 1920px; height:1080px;  background-color: #efefef"
-     @onmousemove="OnMouseMove" @onclick="SaveCoord">
+     style="min-width: 1366px; min-height: 768px; width: 100%; height: 92vh; background-color: lightgray"
+  @onclick="SaveCoord">
 
     @* <SvgHtml Scale="0.2f" >
     <HxGrid TItem="CultureInfo" Responsive="true" DataProvider="GetGridData" PageSize="10">
@@ -79,7 +83,7 @@
     <SvgHtml Y="3" X="170" Height="400" Scale="0.17f">
         <table class="hx-grid table table-hover  ">
             <tr>
-                <th colspan="5" class="text-center">IN-PROGESS</th>
+                <th colspan="5" class="text-center">IN-PROGRESS</th>
             </tr>
             <tr>
                 <th class="hx-grid-header-cell-container"></th>
@@ -129,51 +133,79 @@
     </SvgHtml>
 
     <SvgBase Y="30">
-        <!-- Strip -->
-        <g>
-            <SvgPathP2P id="D-SHEAR-E" Width="@stripThickness" XStart="13" YStart="66.2f" XEnd="25.3f" YEnd="54.9f" Color="@zoneList.LastOrDefault()?.strip?.color"></SvgPathP2P>
-            @foreach (var zone in zoneList)
-            {
-                <SvgPathH Width="@stripThickness" X="@zone.meter" Y="55" Length="1" Color="@zone?.strip?.color"></SvgPathH>
-
-            }
-            <SvgPathP2P id="D-SHEAR-E" Width="@stripThickness" XStart="355" YStart="55" XEnd="368" YEnd="67" Color="@zoneList.Skip(2).FirstOrDefault()?.strip?.color"></SvgPathP2P>
-        </g>
-
-
-        @*  <g>
-        <SvgPathP2P id="D-SHEAR-E" Width="@stripThickness" XStart="13" YStart="66.2f" XEnd="25.3f" YEnd="54.9f" Color="green"></SvgPathP2P>
-        <SvgPathH id="D-SHEAR" Width="@stripThickness" X="25" Y="55" Length="55" Color="red"></SvgPathH>
-
-        <SvgPathH id="ANG-SHEAR" Width="@stripThickness" X="170" Y="55" Length="30" Color="red"></SvgPathH>
-        <SvgPathH id="ANG-SHEAR" Width="@stripThickness" X="200" Y="55" Length="40" Color="red"></SvgPathH>
-        <SvgPathH id="ANG-SHEAR" Width="@stripThickness" X="240" Y="55" Length="115" Color="red"></SvgPathH>
-        <SvgPathP2P id="D-SHEAR-E" Width="@stripThickness" XStart="355" YStart="55" XEnd="368" YEnd="67" Color="blue"></SvgPathP2P>
-        </g>*@
-
 
         <!-- Equipments -->
         <g>
             <SvgReel Id="TR" X="10" Y="65" IsRotating="true" Color="@zoneList.LastOrDefault()?.strip?.color"></SvgReel>
 
-            <SvgShear Text="DSHR" X="50" Y="50"></SvgShear>
-            <SvgDryer Text="DRYER" X="70" Y="50.5f"></SvgDryer>
+            <SvgReflector Text="DRF" X="22.2f" Y="50.2f" IsRotating=@true></SvgReflector>
+            <SvgOiler Text="OILER" X="32" Y="48"></SvgOiler>
+            <SvgStretching Text="STR" X="40" Y="50" IsRotating=true></SvgStretching>
 
-            <SvgPinchRoll Text="PR-1" X="250" Y="50.2f" IsRotating=@true></SvgPinchRoll>
+            <SvgBasicRect X="52.5f" Y="56" Width="35" Height="2" StrokeWidth="0.3f"></SvgBasicRect>
 
-            <SvgAngleShear Text="ASHR" X="262" Y="50"></SvgAngleShear>
-            <SvgDustCol Text="DCL2" X="273" Y="50"></SvgDustCol>
+            <SvgScrapBox X="88" Y="57"></SvgScrapBox>
+            <SvgShear Text="DSHR" X="94" Y="50"></SvgShear>
 
-            <SvgLeveller Text="LEVELLER" X="293" Y="50.2f"></SvgLeveller>
-            <SvgShear Text="ESHR" X="313" Y="50"></SvgShear>
-            <SvgDustCol Text="DCL1" X="321" Y="50"></SvgDustCol>
-            <SvgPreStr Text="PRE-STR" X="333" Y="48.7f"></SvgPreStr>
+            <SvgPinchRoll Text="PR-2" X="104" Y="50.2f" IsRotating=@true></SvgPinchRoll>
+            <SvgGuide X="111" Y="50.3f"></SvgGuide>
+            <SvgDryer Text="DRYER" X="118" Y="50.5f"></SvgDryer>
+
+
+            <SvgTank4R Text="RT-5" X="130.3f" Y="50.2f"></SvgTank4R>
+            <SvgTank2R Text="RT-4" X="140.4f" Y="50.2f"></SvgTank2R>
+            <SvgTank2R Text="RT-3" X="147.6f" Y="50.2f"></SvgTank2R>
+            <SvgTank2R Text="RT-2" X="154.8f" Y="50.2f"></SvgTank2R>
+            <SvgTank4R Text="RT-1" X="162" Y="50.2f"></SvgTank4R>
+
+            <SvgTank6R Text="TANK-4" RollTemplate="1245" X="177" Y="50.2f"></SvgTank6R>
+            <SvgTank6R Text="TANK-3" RollTemplate="14" X="195" Y="50.2f"></SvgTank6R>
+            <SvgTank6R Text="TANK-2" RollTemplate="14" X="213" Y="50.2f"></SvgTank6R>
+            <SvgTank6R Text="TANK-1" RollTemplate="1346" X="231" Y="50.2f"></SvgTank6R>
+            <SvgTank6R Text="PRE-WASH" RollTemplate="123456" X="250" Y="50.2f" HasBackground="false"></SvgTank6R>
+            <SvgPinchRoll Text="PR-1" X="268.1f" Y="50.2f" IsRotating=@true></SvgPinchRoll>
+
+            <SvgGuide X="275.4f" Y="50.3f"></SvgGuide>
+            <SvgScrapBox X="282" Y="57"></SvgScrapBox>
+            <SvgAngleShear Text="ASHR" X="285" Y="50"></SvgAngleShear>
+            <SvgDustCol Text="DCL2" X="296" Y="50"></SvgDustCol>
+
+            <SvgLeveller Text="LVL" X="309" Y="50.1f"></SvgLeveller>
+            <SvgScrapBox X="319.2f" Y="57"></SvgScrapBox>
+            <SvgShear Text="ESHR" X="325" Y="50"></SvgShear>
+            <SvgDustCol Text="DCL1" X="333" Y="50"></SvgDustCol>
+            <SvgPreStr Text="PSTR" X="345" Y="50"></SvgPreStr>
+            <SvgTank2RUnbox X="351f" Y="51" Scale="0.8f"></SvgTank2RUnbox>
 
             <SvgReel Id="POR" X="360" Y="65" IsRotating="true" Color="@zoneList.Skip(2).FirstOrDefault()?.strip?.color"></SvgReel>
 
+
+            <!-- Strip -->
+            <g>
+                <SvgPathP2P id="D-SHEAR-E" Width="@stripThickness" XStart="13" YStart="66.2f" XEnd="25.3f" YEnd="54.9f" Color="@zoneList.LastOrDefault()?.strip?.color"></SvgPathP2P>
+                @foreach (var zone in zoneList)
+                {
+                    <SvgPathH Width="@stripThickness" X="@zone.meter" Y="55" Length="1" Color="@zone?.strip?.color"></SvgPathH>
+
+                }
+                <SvgPathP2P id="D-SHEAR-E" Width="@stripThickness" XStart="354.2f" YStart="54.8f" XEnd="368" YEnd="67" Color="@zoneList.Skip(2).FirstOrDefault()?.strip?.color"></SvgPathP2P>
+            </g>
+
+
+            @*  <g>
+            <SvgPathP2P id="D-SHEAR-E" Width="@stripThickness" XStart="13" YStart="66.2f" XEnd="25.3f" YEnd="54.9f" Color="green"></SvgPathP2P>
+            <SvgPathH id="D-SHEAR" Width="@stripThickness" X="25" Y="55" Length="55" Color="red"></SvgPathH>
+
+            <SvgPathH id="ANG-SHEAR" Width="@stripThickness" X="170" Y="55" Length="30" Color="red"></SvgPathH>
+            <SvgPathH id="ANG-SHEAR" Width="@stripThickness" X="200" Y="55" Length="40" Color="red"></SvgPathH>
+            <SvgPathH id="ANG-SHEAR" Width="@stripThickness" X="240" Y="55" Length="115" Color="red"></SvgPathH>
+            <SvgPathP2P id="D-SHEAR-E" Width="@stripThickness" XStart="355" YStart="55" XEnd="368" YEnd="67" Color="blue"></SvgPathP2P>
+            </g>*@
+
         </g>
     </SvgBase>
-    <g>
+
+    @*<g>
         <!-- ONLY DEVELOPMENT -->
         @if (openGuideLines == true)
         {
@@ -181,7 +213,7 @@
             <path style="stroke:black;stroke-width:1;stroke-opacity:0.3;" d="M @Round(X) 500 V 0" />
         }
         <!--------------------->
-    </g>
+    </g>*@
 </svg>
 <ol>
     @foreach (var item in coords)
@@ -222,15 +254,15 @@
         public Strip? strip;
     }
 
-    private void OnMouseMove(MouseEventArgs mouseEventArgs)
-    {
-        X = mouseEventArgs.OffsetX / 5;
-        Y = mouseEventArgs.OffsetY / 5;
-    }
+    //private void OnMouseMove(MouseEventArgs mouseEventArgs)
+    //{
+    //    X = mouseEventArgs.OffsetX / 5;
+    //    Y = mouseEventArgs.OffsetY / 5;
+    //}
 
-    private void SaveCoord()
+    private void SaveCoord(MouseEventArgs mouseEventArgs)
     {
-        coords.Add($"X: {Round(X)} Y: {Round(Y)}");
+        coords.Add($"X: {Round(mouseEventArgs.OffsetX / 5)} Y: {Round(mouseEventArgs.OffsetY / 5)}");
     }
 
     private double Round(double number)
@@ -349,5 +381,6 @@
 
         timer.Start();
     }
-
 }
+
+

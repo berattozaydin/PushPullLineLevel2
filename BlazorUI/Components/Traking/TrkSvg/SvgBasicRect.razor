@@ -1,0 +1,25 @@
+﻿@inherits SvgBase
+
+<SvgBase X="X" Y="Y" Angle="Angle" Scale="Scale">
+    <g>
+        <rect 
+              width=@Width
+              height=@Height
+              fill=@Fill
+              fill-opacity=@FillOpacity
+              stroke=@Stroke
+              stroke-width=@StrokeWidth
+              x="0"
+              y="0" />
+    </g>
+</SvgBase>
+
+
+@code {
+    [Parameter] public float Width { get; set; }
+    [Parameter] public float Height { get; set; }
+    [Parameter] public string Stroke { get; set; } = "#000";
+    [Parameter] public float StrokeWidth { get; set; } = 1f;
+    [Parameter] public string Fill { get; set; } = "none";
+    [Parameter] public int FillOpacity { get; set; } = 1;
+}
