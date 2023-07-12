@@ -16,7 +16,7 @@ namespace BlazorBLL.Managers
         }
         public ReturnResult<List<EvtAlmDto>> GetAllEvtAlm(EvtAlarmParams baseParameter)
         {
-            var sql = "SELECT * FROM event_alarm";
+            var sql = "SELECT * FROM dbo.evtalm";
             if (!string.IsNullOrEmpty(baseParameter.SortField))
                 sql +=" ORDER BY "+baseParameter.SortField;
 

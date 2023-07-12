@@ -8,20 +8,21 @@ namespace BlazorDAL.Models
 {
     public class DelayDto : BaseParameter
     {
-        public int delay_id { get; set; }
-        public int delay_group_code { get; set; }
-        public int delay_reason_code { get; set; }
-        public int delay_class_code { get; set; }
-        public string delay_group_name { get; set; }
-        public string delay_reason_name { get; set; }
-        public string delay_class_name { get; set; }
-        public int duration { get; set; }
-        public int shift_id { get; set; }
-        public string accept_by { get; set; }
-        public DateTime begin_date { get; set; }
-        public DateTime end_date { get; set; }
-        public string remark { get; set; }
-
-
+        public int ID { get; set; }
+        public DateTime BEGIN_TIME { get; set; }
+        public DateTime END_TIME { get; set; }
+        public DateTime DURATION { get; set; }
+        public int DELAY_REASON_CODE { get; set; }
+        public int DELAY_GROUP_CODE { get; set; }
+        public int DELAY_CLASS_CODE { get; set; }
+        public int SHIFT_ID { get; set; }
+        public bool WAS_SENT { get; set; }
+        public bool IS_AUTO { get; set; }
+        public string? ACCEPTED_BY { get; set; }
+        public string? DELAY_REASON_NAME { get; set; }
+        public string? REMARK { get; set; }
+        public string? DELAY_GROUP_NAME { get; set; }
+        public string? CREW { get; set; }
+        public string? DELAY_CLASS_NAME { get; set; }
     }
 }

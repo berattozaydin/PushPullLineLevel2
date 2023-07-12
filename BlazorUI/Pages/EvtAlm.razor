@@ -39,11 +39,15 @@
                         >
             <Columns>
 
-                <RadzenDataGridColumn TItem="EvtAlmDto" Filterable Property="event_alarm_id" Title="Numarası" Width="20px" />
-                <RadzenDataGridColumn TItem="EvtAlmDto" Property="machine_name" Title="Makine Adı" Width="20px" />
-                <RadzenDataGridColumn TItem="EvtAlmDto" Property="user_name" Title="Kullanıcı Adı" Width="20px" />
-                <RadzenDataGridColumn TItem="EvtAlmDto" Property="log_description" Title="Açıklaması" Width="100px" />
-                <RadzenDataGridColumn TItem="EvtAlmDto" Property="log_method" Title="Metodu" Width="20px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Filterable Property="ID" Title="Numarası" Width="20px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Property="LINE_NUMBER" Title="Satır Numarası" Width="20px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Property="SEVERITY" Title="Durumu" Width="20px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Property="KIND" Title="Tipi" Width="100px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Property="DATI" Title="Tarihi" Width="20px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Property="USER_NAME" Title="Kullanıcı" Width="20px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Property="METHOD_NAME" Title="Metod Adı" Width="20px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Property="USER_MSG" Title="Kullanıcı Mesajı" Width="20px" />
+                <RadzenDataGridColumn TItem="EvtAlmDto" Property="SYS_MSG" Title="Sistem Mesajı" Width="20px" />
                 <RadzenDataGridColumn TItem="EvtAlmDto" SortOrder="SortOrder.Descending" Property="dati" Title="Tarihi" Width="20px" />
             </Columns>
             </RadzenDataGrid>

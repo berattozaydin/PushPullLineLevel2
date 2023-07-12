@@ -3,12 +3,27 @@
 @using Microsoft.AspNetCore.SignalR.Client;
 
 @inject NavigationManager NavigationManager;
-<PageTitle>Anasayfa</PageTitle>
+<PageTitle>@message</PageTitle>
+<div>
 
+    @counter
+</div>
 @code {
     private HubConnection hubConnection;
     private string _message;
     private List<EvtAlmDto> evtAlmDto;
+    [Inject]
+    NavigationManager navigationManager { get; set; }
+    private int _counter;
+    public int counter
+    {
+        get { return _counter; }
+        set
+        {
+            if (_counter == value) return;
+            _counter = value;
+        }
+    }
     public string message
     {
         get { return _message; }
@@ -24,10 +39,11 @@
     }
     private async Task ConnectWebSocketAsync()
     {
-
+        string url = "http://localhost:5213/websocket?pagename=";
+        string navigation = navigationManager.BaseUri + "/websocket?pagename=";
         var pn = "/home";
         hubConnection = new HubConnectionBuilder()
-        .WithUrl("http://localhost:5213/websocket?pagename=" + pn)
+        .WithUrl(url + pn)
         .WithAutomaticReconnect()
         .Build();
         await StartSignalRSocketAsync();
@@ -46,10 +62,14 @@
     }
     private void ReceiveMessage()
     {
-        hubConnection.On<string, List<EvtAlmDto>>("ReceiveMessage", (user, message) =>
+        hubConnection.On<string, CounterList>("Trk", (user, message) =>
       {
-          this.evtAlmDto = message;
+          this.counter = message.Counter;
           StateHasChanged();
       });
+    }
+    public class CounterList
+    {
+        public int Counter { get; set; } = 0;
     }
 }

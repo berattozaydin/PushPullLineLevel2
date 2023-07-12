@@ -19,14 +19,14 @@ namespace BlazorWebApi.Controllers
         }
 
         [HttpGet]
-        public ReturnResult<Account> GetShift()
+        public ReturnResult<USER_DATA> GetShift()
         {
             var res = shiftManager.GetShift();
             return res;
         }
 
         [HttpPost]
-        public ReturnResult SetShiftForeman(Account accountDto) 
+        public ReturnResult SetShiftForeman(USER_DATA accountDto) 
         {
             var res = shiftManager.SetShiftForeman(accountDto);
             return res;

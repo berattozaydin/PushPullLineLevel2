@@ -1,0 +1,57 @@
+﻿@page "/SystemControlPanel"
+@using BlazorUI.Api;
+@attribute [Authorize]
+<PageTitle>Sistem Kontrol Paneli</PageTitle>
+<RadzenCard class="float-start w-25 mt-2">
+    <div class="container">
+
+        <div class="row">
+            <p class="fw-bold">Aktif Olan Kullanıcılar</p>
+            @for (int i = 0; i<10; i++)
+            {
+                <p>@i</p>
+            }
+        </div>
+        <div class="row mt-2">
+            <div class="col-sm-9" style="font-size:0.95rem;">
+                <p class="fw-bold">Kullanıcılara sayfa yenileme isteği gönder</p>
+            </div>
+            <div class="col-sm-3"><RadzenCheckBox @bind-Value=@checkedRequest></RadzenCheckBox></div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-sm-12">
+                <p class="float-end">
+                    <RadzenButton Text="Gönder" Click="()=>SendRefresh()" ButtonStyle="ButtonStyle.Primary" class="pt-2" Icon="done">
+                    </RadzenButton>
+                </p>
+            </div>
+        </div>
+    </div>
+</RadzenCard>
+@code {
+    [Inject]
+    AdminApi adminApi { get; set; }
+    private bool _checkedRequest = false;
+    bool checkedRequest
+    {
+        get
+        {
+            return _checkedRequest;
+        }
+        set
+        {
+            if (_checkedRequest == value) return;
+            _checkedRequest = value;
+            StateHasChanged();
+        }
+    }
+    async void SendRefresh()
+    {
+        if(checkedRequest == true)
+            await adminApi.SendRefresh();
+        else
+        {
+            
+        }
+    }
+}

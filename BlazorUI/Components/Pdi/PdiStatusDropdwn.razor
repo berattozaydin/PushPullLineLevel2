@@ -1,10 +1,10 @@
 ﻿@using BlazorDAL;
 @using BlazorUI.Api;
-<RadzenDropDown TextProperty="Name"
+<!--<RadzenDropDown TextProperty="Name"
                 ValueProperty="CustomerOrderStatusId"
                 @bind-Value=pdiStatusId
                 Data=@customerOrderStatusList Style="border-radius:10px !important;height:40px !important;width:200px !important;">
-</RadzenDropDown>
+</RadzenDropDown>-->
 @code {
     private int _pdiStatusId;
     [Parameter]
@@ -25,12 +25,12 @@
 
     [Parameter]
     public EventCallback<int> pdiStatusIdChanged { get; set; }
-    IEnumerable<CustomerOrderStatus> customerOrderStatusList;
+    /*IEnumerable<CustomerOrderStatus> customerOrderStatusList;
     [Inject]
-    CustomerOrderApi itemApi { get; set; }
+    PdiApi itemApi { get; set; }
     protected override async Task OnInitializedAsync()
     {
         customerOrderStatusList = await itemApi.GetCustomerOrderStatusList();
         
-    }
+    }*/
 }

@@ -32,6 +32,7 @@
                         PagerHorizontalAlign="HorizontalAlign.Left"
                         Data="@delays"
                         TItem="DelayDto"
+                        class="tp-datatable tp-table-fixed"
                         Style="background-color:#c6c3c6; --rz-cell-filter-width:10px"
                         GridLines="DataGridGridLines.Both"
                         SelectionMode="DataGridSelectionMode.Single"
@@ -40,17 +41,19 @@
                         >
             <Columns>
 
-                <RadzenDataGridColumn TItem="DelayDto" Filterable Property="delay_id" Title="Duruş Numarası" Width="50px" />
-                <RadzenDataGridColumn TItem="DelayDto" Property="delay_group_name" Title="Grup" Width="50px" />
-                <RadzenDataGridColumn TItem="DelayDto" Property="delay_reason_name" Title="Nedeni" Width="50px" />
-                <RadzenDataGridColumn TItem="DelayDto" Property="delay_class_name" Title="Sınıfı" Width="50px" />
-                <RadzenDataGridColumn TItem="DelayDto" Property="remark" Title="Açıklaması" Width="50px" />
-                <RadzenDataGridColumn TItem="DelayDto" Property="duration" Title="Süresi" Width="50px" />
-                <RadzenDataGridColumn TItem="DelayDto" Property="accept_by" Title="Onaylayan" Width="50px" />
-                <RadzenDataGridColumn TItem="DelayDto" Property="shift_id" Title="Vardiya" Width="50px" />
-                <RadzenDataGridColumn TItem="DelayDto" Property="delay_id" Title="İşlemler" Width="50px">
+                <RadzenDataGridColumn TItem="DelayDto" Filterable Property="ID" Title="Duruş Numarası" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="DELAY_GROUP_NAME" Title="Grup" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="DELAY_REASON_NAME" Title="Nedeni" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="DELAY_CLASS_NAME" Title="Sınıfı" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="REMARK" Title="Açıklaması" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="CREW" Title="Görev" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="SHIFT_ID" Title="Vardiya" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="BEGIN_TIME" Title="Başlama Tarihi" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="END_TIME" Title="Bitiş Tarihi" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="DURATION" Title="Süresi" Width="50px" />
+                <RadzenDataGridColumn TItem="DelayDto" Property="ID" Title="İşlemler" Width="50px">
                     <Template Context="data">
-                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="pageview" class="h-25 m-1" Click="@(()=>OpenDelayDlg(data.delay_id,"update"))" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="pageview" class="h-25 m-1" Click="@(()=>OpenDelayDlg(data.ID,"update"))" />
                         <RadzenButton ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="delete" class="h-25 m-1" Click="@(()=>DeleteCustomerOrder(data))" />
                     </Template>
                 </RadzenDataGridColumn>
@@ -104,7 +107,7 @@
     async void DeleteCustomerOrder(DelayDto delay)
     {
         var result = await dialogService
-        .Confirm(delay.delay_id + " numaralı duruşunu silmek istiyor musunuz?", "Uyarı",
+        .Confirm(delay.ID + " numaralı duruşunu silmek istiyor musunuz?", "Uyarı",
         new ConfirmOptions { OkButtonText="Evet", CancelButtonText="Hayır" });
         if (result == true)
         {
@@ -125,7 +128,7 @@
     }
     void RowRender(RowRenderEventArgs<DelayDto> args)
     {
-        if (!string.IsNullOrEmpty(args.Data.accept_by))
+        if (!string.IsNullOrEmpty(args.Data.REMARK))
         {
             args.Attributes.Add("style", $"background-color:#ACF672;");
         }

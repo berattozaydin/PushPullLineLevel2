@@ -1,0 +1,118 @@
+﻿@using BlazorDAL.Models;
+@using BlazorDAL;
+@using BlazorUI.Api;
+@inject DialogService dialogService;
+<fieldset class="border rounded-3 p-3">
+    <div class="row">
+        <legend class="col-form-label col-sm-2 pt-0">Bobin Bilgileri</legend>
+        <RadzenRow Gap="2rem" Class="rz-p-0 rz-p-lg-4">
+            <RadzenColumn Size="12" SizeMD="12">
+                <div class="container text-center">
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Bobin Numarası</RadzenText>
+                            <RadzenTextBox @bind-Value=pdoDto.EX_COIL_ID class="textBox"></RadzenTextBox>
+                        </div>
+                        <div class="col-sm">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Giriş Bobin Numarası</RadzenText>
+                            <RadzenTextBox @bind-Value=pdoDto.EN_COIL_ID class="textBox"></RadzenTextBox>
+                        </div>
+                        <div class="col-sm">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Dış Çap</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=pdoDto.OUT_DIA class="textBox"></RadzenNumeric>
+                        </div>
+                        <div class="col-sm">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Kalınlık (mm)</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=pdoDto.PRD_THICK class="textBox"></RadzenNumeric>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Yağlama Miktarı (g/m²)</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=pdoDto.OIL_AMOUNT class="textBox"></RadzenNumeric>
+                        </div>
+                        <div class="col-sm">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Uzunluk (m)</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=pdoDto.PRD_LENGTH class="textBox"></RadzenNumeric>
+                        </div>
+                        <div class="col-sm">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Genişlik (cm)</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=pdoDto.PRD_WIDTH class="textBox"></RadzenNumeric>
+                        </div>
+                        <div class="col-sm">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Hesaplanan Ağırlık (kg)</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=pdoDto.CALC_WEIGHT class="textBox"></RadzenNumeric>
+                        </div>
+                    </div>
+
+                </div>
+            </RadzenColumn>
+        </RadzenRow>
+    </div>
+</fieldset>
+<div class="row justify-content-end mt-3 mr-1 position-relative bottom-0">
+    <div class="col-2">
+        <RadzenButton Icon="done" Style="background-color:blue;color:white" class="dlgBtn" Click="@SavePdo" Text="Kaydet" />
+    </div>
+    <div class="col-2">
+        <RadzenButton Style="color:white;background-color:red;" ButtonStyle="ButtonStyle.Danger" class="dlgBtn" Click="@ClosePdoDlg" Text="İptal" />
+    </div>
+</div>
+
+<style>
+    .dlgBtn {
+        border: 1px 2px;
+        border-radius: 10px;
+    }
+
+</style>
+@code {
+    [Parameter]
+    public string ExCoilId { get; set; } = "";
+
+    [Parameter]
+    public string dlgType { get; set; } = "create";
+
+    private PDO pdoDto = new PDO { };
+    [Inject]
+    PdoApi pdoApi { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (dlgType == "create")
+        {
+            pdoDto = new PDO { };
+        }
+        if (dlgType == "update")
+        {
+            pdoDto = await pdoApi.GetPdo(ExCoilId);
+        }
+        await base.OnInitializedAsync();
+
+    }
+    void ClosePdoDlg()
+    {
+
+        dialogService.Close(true);
+
+    }
+    async void SavePdo()
+    {
+
+        if (dlgType == "create")
+        {
+            pdoDto.PRD_DATI = DateTime.Now;
+            pdoApi.AddPdo(pdoDto);
+
+        }
+        if (dlgType == "update")
+        {
+            pdoApi.UpdatePdo(pdoDto);
+        }
+        ClosePdoDlg();
+    }
+
+}
+

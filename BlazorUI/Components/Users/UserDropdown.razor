@@ -1,7 +1,7 @@
 ﻿@using BlazorDAL;
 @using BlazorUI.Api;
-<RadzenDropDown TextProperty="Name"
-                ValueProperty="Id"
+<RadzenDropDown TextProperty="FIRST_NAME"
+                ValueProperty="ID"
                 @bind-Value=userId
                 Data=@userList Style="border-radius:10px !important;height:40px !important;width:200px !important;">
 </RadzenDropDown>
@@ -26,7 +26,7 @@
 
     [Parameter]
     public EventCallback<int> userIdChanged { get; set; }
-    IEnumerable<Account> userList;
+    IEnumerable<USER_DATA> userList;
     [Inject]
     UserApi userApi { get; set; }
     protected override async Task OnInitializedAsync()

@@ -12,6 +12,7 @@ namespace BlazorUI.Api
         string END_POINT = "http://localhost:5213/api/EvtAlm/"; // must be empty publish
         IHttpClient httpClient;
         NavigationManager navigationManager;
+        //string END_POINT = "";
         public EvtAlmApi(NavigationManager navigationManager, IHttpClient httpClient)
         {
             this.httpClient= httpClient;

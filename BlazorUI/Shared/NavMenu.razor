@@ -2,19 +2,22 @@
 @inject DialogService dialogService;
 <AuthorizeView>
     <Authorized>
-        <RadzenMenu class="radzenMenu navbar navbar-expand-lg navbar-light bg-light">
+        <RadzenMenu class="radzenMenu text-center navbar navbar-expand-lg navbar-light bg-light">
 
-            <RadzenMenuItem Text="Anasayfa" Path="Traking"></RadzenMenuItem>
-            <RadzenMenuItem @ref="radzenMenuItemRef" Text="Bobin Bilgileri">
-                <RadzenMenuItem Icon="donut_large" Text="Pdi" class="subItem" Path="Pdi"></RadzenMenuItem>
-                <RadzenMenuItem Icon="save" Text="Pdo" class="subItem" Path="pdo"></RadzenMenuItem>
+            <RadzenMenuItem class="w-50" Text="Hat İzleme" Path="Traking"></RadzenMenuItem>
+            <RadzenMenuItem class="w-50" @ref="radzenMenuItemRef" Text="Bobin Bilgileri">
+                <RadzenMenuItem Icon="donut_large" Text="Pdi" class="w-50" Path="Pdi"></RadzenMenuItem>
+                <RadzenMenuItem Icon="save" Text="Pdo" class="w-50" Path="pdo"></RadzenMenuItem>
             </RadzenMenuItem>
-            <RadzenMenuItem Text="Duruşlar" Path="Delays"></RadzenMenuItem>
-            <RadzenMenuItem Text="Olay Günlükleri" Path="EvtAlm"></RadzenMenuItem>
-            <RadzenMenuItem Text="Kaliteler"></RadzenMenuItem>
-            <RadzenMenuItem Text="Reçeteler"></RadzenMenuItem>
+            <RadzenMenuItem class="w-50" Text="Duruşlar" Path="Delays"></RadzenMenuItem>
+            <RadzenMenuItem class="w-50" Text="Olay Günlükleri" Path="EvtAlm"></RadzenMenuItem>
+            
             <RadzenMenuItem Text="Sistem Ayarları">
-                <RadzenMenuItem Icon="donut_large" Text="Vardiya Formeni" Click="()=>ChangeShiftForeman()" class="subItem"></RadzenMenuItem>
+                <RadzenMenuItem Icon="donut_large" Text="Vardiya Formeni" Click="()=>ChangeShiftForeman()" class="subItem fs-6"></RadzenMenuItem>
+                <RadzenMenuItem Icon="donut_large" Text="Yönetim Paneli" Path="SystemControlPanel" class="subItem fs-6"></RadzenMenuItem>
+                <RadzenMenuItem Text="Leveler Ayarları" Path="Leveler" class="fs-6"></RadzenMenuItem>
+                <RadzenMenuItem Text="Kaliteler" class="fs-6"></RadzenMenuItem>
+                <RadzenMenuItem Text="Reçeteler" class="fs-6"></RadzenMenuItem>
             </RadzenMenuItem>
         </RadzenMenu>
     </Authorized>
@@ -25,7 +28,7 @@
 <style>
     .radzenMenu {
         max-width: 60% !important;
-        text-align: center !important;
+        
     }
 
     .rz-menu {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlazorBLL.State
+namespace BlazorBLL.HubMgr
 {
     public static class WsClients
     {

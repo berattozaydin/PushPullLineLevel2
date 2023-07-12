@@ -10,56 +10,56 @@ namespace BlazorWebApi.Controllers
     [ApiController]
     [Route("api/[controller]/[action]")]
 
-    public class CustomerOrderController : ControllerBase
+    public class PdiController : ControllerBase
     {
 
-        CustomerOrderManager customerOrderManager;
-        public CustomerOrderController(CustomerOrderManager customerOrderManager)
+        PdiManager customerOrderManager;
+        public PdiController(PdiManager customerOrderManager)
         {
             this.customerOrderManager = customerOrderManager;
         }
         [HttpPost]
-        public ReturnResult UpdateCustomerOrder(CustomerOrder parametres)
+        public ReturnResult UpdatePdi(PDI parametres)
         {
-            var res = customerOrderManager.UpdateCustomerOrder(parametres);
+            var res = customerOrderManager.UpdatePdi(parametres);
             return res;
         }
         [HttpPost]
-        public ReturnResult AddCustomerOrder(CustomerOrder parametres)
+        public ReturnResult AddPdi(PDI parametres)
         {
-            var res = customerOrderManager.AddCustomerOrder(parametres);
+            var res = customerOrderManager.AddPdi(parametres);
             return res;
         }
         [HttpGet]
-        public ReturnResult<List<CustomerOrderDto>> GetCustomerOrderList()
+        public ReturnResult<List<PDI>> GetPdiList()
         {
-            var res = customerOrderManager.GetCustomerOrderList();
+            var res = customerOrderManager.GetPdiList();
             return res;
         }
         [HttpGet]
-        public ReturnResult<CustomerOrder> GetCustomerOrder(string CustomerOrderId)
+        public ReturnResult<PdiDto> GetPdi(string enCoilId)
         {
-            var res = customerOrderManager.GetCustomerOrder(CustomerOrderId);
+            var res = customerOrderManager.GetPdi(enCoilId);
             return res;
         }
-        [HttpGet]
+        /*[HttpGet]
         public ReturnResult<List<CustomerOrderStatus>> GetCustomerOrderStatusList()
         {
             var res = customerOrderManager.GetCustomerOrderStatusList();
             return res;
 
-        }
+        }*/
         [HttpPost]
-        public ReturnResult DeleteCustomerOrder(CustomerOrderDto customerOrderId)
+        public ReturnResult DeletePdi(PdiDto pdi)
         {
-            var res = customerOrderManager.DeleteCustomerOrder(customerOrderId);
+            var res = customerOrderManager.DeletePdi(pdi);
             return res;
         }
-        [HttpPost]
+       /* [HttpPost]
         public ReturnResult ChangePdiStatus(CustomerOrder customerOrder)
         {
             var res = customerOrderManager.ChangePdiStatus(customerOrder);
             return res;
-        }
+        }*/
     }
 }

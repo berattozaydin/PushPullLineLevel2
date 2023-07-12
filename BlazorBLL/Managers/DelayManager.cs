@@ -18,7 +18,7 @@ namespace BlazorBLL.Managers
         }
         public ReturnResult<List<DelayDto>> GetDelayList()
         {
-            var sql = PetaPoco.Sql.Builder.Append("SELECT * FROM delay");
+            var sql = PetaPoco.Sql.Builder.Append("SELECT * FROM dbo.delay_data");
             var delayList = mgr.Db.Fetch<DelayDto>(sql);
             return new ReturnResult<List<DelayDto>> 
             {
@@ -29,7 +29,7 @@ namespace BlazorBLL.Managers
         }
         public ReturnResult<DelayDto> GetDelay(int delayId)
         {
-            var sql = PetaPoco.Sql.Builder.Append("SELECT * FROM delay where delay_id = @0",delayId);
+            var sql = PetaPoco.Sql.Builder.Append("SELECT * FROM dbo.delay_data where id = @0",delayId);
             var res = mgr.Db.FirstOrDefault<DelayDto>(sql);
             return new ReturnResult<DelayDto>
             {

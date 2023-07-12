@@ -1,4 +1,5 @@
-﻿using BlazorDAL.Models;
+﻿using BlazorDAL;
+using BlazorDAL.Models;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace BlazorBLL.Managers
         }
         public async Task<Result> LoginUser(AccountDto searchAccount)
         {
-            var account = mgr.Db.FirstOrDefault<AccountDto>("SELECT * FROM \"Account\" Where \"Username\" =@0 AND \"Password\" = @1", searchAccount.Username, ToSha256(searchAccount.Password));
+            var account = mgr.Db.FirstOrDefault<USER_DATA>("SELECT * FROM dbo.user_data where user_name=@0 and password=@1", searchAccount.USER_NAME, ToSha256(searchAccount.PASSWORD));
 
             if (account == null)
             {
@@ -38,10 +39,10 @@ namespace BlazorBLL.Managers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
 
-                    new Claim(ClaimTypes.Name, account.Username),
-                    new Claim(ClaimTypes.Email, account.Email),
-                    new Claim(ClaimTypes.Role, account.Role.ToString()),
-                    new Claim("UserId", account.Id.ToString())
+                    new Claim(ClaimTypes.Name, account.USER_NAME),
+                    new Claim(ClaimTypes.Email, account.FIRST_NAME),
+                    new Claim(ClaimTypes.Role, account.USER_ROLE),
+                    new Claim("UserId", account.ID.ToString())
                 }),
                 Expires = expires,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -52,15 +53,15 @@ namespace BlazorBLL.Managers
             var result = new Result
             {
                 isSuccess = 1,
-                msg = $"Hoşgeldin {account.Name} {account.LastName} ",
+                msg = $"Hoşgeldin {account.FIRST_NAME} {account.LAST_NAME} ",
                 token = token,
                 expires = expires,
-                id = account.Id,
-                username = account.Username,
-                name = account.Name,
-                lastName = account.LastName,
-                role = account.Role,
-                email=account.Email
+                id = account.ID,
+                username = account.USER_NAME,
+                name = account.FIRST_NAME,
+                lastName = account.LAST_NAME,
+                role = Convert.ToInt32(account.USER_ROLE),
+                email=account.FIRST_NAME
 
             };
             return result;

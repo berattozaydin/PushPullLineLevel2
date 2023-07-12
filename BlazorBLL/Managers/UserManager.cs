@@ -15,10 +15,12 @@ namespace BlazorBLL.Managers
         {
             this.manager=manager;
         }
-        public ReturnResult<List<Account>> GetUserList()
+        public ReturnResult<List<USER_DATA>> GetUserList()
         {
-            var res = manager.Db.Fetch<Account>();
-            return new ReturnResult<List<Account>>
+            var sql = PetaPoco.Sql.Builder
+                .Append("SELECT * from dbo.user_data");
+            var res = manager.Db.Fetch<USER_DATA>(sql);
+            return new ReturnResult<List<USER_DATA>>
             {
                 IsSuccess=1,
                 Msg="Kullanıcı Listesi Getirildi",

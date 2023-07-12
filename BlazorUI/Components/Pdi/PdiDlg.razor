@@ -1,4 +1,5 @@
 ﻿@using BlazorDAL.Models;
+@using BlazorDAL;
 @using BlazorUI.Api;
 @inject DialogService dialogService;
 <fieldset class="border rounded-3 p-3">
@@ -11,45 +12,37 @@
               <div class="row">
                     <div class="col-sm">
                         <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Bobin Numarası</RadzenText>
-                        <RadzenTextBox @bind-Value=customerOrderDto.Name class="textBox"></RadzenTextBox>
+                            <RadzenTextBox @bind-Value=pdiDto.EN_COIL_ID class="textBox"></RadzenTextBox>
                     </div>
                 <div class="col-sm">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Numarası</RadzenText>
-                    <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Bobin Kodu</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=pdiDto.OIL_CODE class="textBox"></RadzenNumeric>
                 </div>
-                <div class="col-sm">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Numarası</RadzenText>
-                    <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
-                </div>
+                        <div class="col-sm">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Dış Çap</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=pdiDto.OUT_DIA class="textBox"></RadzenNumeric>
+                        </div>
+                        <div class="col-sm">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Kalınlık (mm)</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=pdiDto.THICKNESS class="textBox"></RadzenNumeric>
+                        </div>
                 </div>
                    <div class="row">
-                    <div class="col-sm">
-                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Bobin Numarası</RadzenText>
-                        <RadzenTextBox @bind-Value=customerOrderDto.Name class="textBox"></RadzenTextBox>
+             
+                <div class="col-sm">
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Ağırlık (kg)</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=pdiDto.OIL_WEIGHT class="textBox"></RadzenNumeric>
+                </div>
+                        <div class="col-sm">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Uzunluk (m)</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=pdiDto.LENGTH class="textBox"></RadzenNumeric>
+                        </div>
+                        <div class="col-sm">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Genişlik (cm)</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=pdiDto.WIDTH class="textBox"></RadzenNumeric>
+                        </div>
+                      
                     </div>
-                <div class="col-sm">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Numarası</RadzenText>
-                    <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
-                </div>
-                <div class="col-sm">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Numarası</RadzenText>
-                    <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
-                </div>
-                </div>
-                   <div class="row">
-                    <div class="col-sm">
-                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Bobin Numarası</RadzenText>
-                        <RadzenTextBox @bind-Value=customerOrderDto.Name class="textBox"></RadzenTextBox>
-                    </div>
-                <div class="col-sm">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Numarası</RadzenText>
-                    <RadzenTextBox @bind-Value=customerOrderDto.OrderNumber class="textBox"></RadzenTextBox>
-                </div>
-                <div class="col-sm">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Sipariş Durumu</RadzenText>
-                    <PdiStatusDropdwn @bind-pdiStatusId=customerOrderDto.CustomerOrderStatusId ></PdiStatusDropdwn>
-                </div>
-                </div>
 
            </div>
         </RadzenColumn>
@@ -58,10 +51,10 @@
     </fieldset>
 <div class="row justify-content-end mt-3 mr-1 position-relative bottom-0">
    <div class="col-2">
-    <RadzenButton Icon="done" Style="background-color:blue;color:white" class="dlgBtn" Click="@SaveCustomerOrder" Text="Kaydet" />
+    <RadzenButton Icon="done" Style="background-color:blue;color:white" class="dlgBtn" Click="@SavePdi" Text="Kaydet" />
 </div>
     <div class="col-2">
-    <RadzenButton Style="color:white;background-color:red;" ButtonStyle="ButtonStyle.Danger" class="dlgBtn" Click="@CloseDialog" Text="İptal" />
+    <RadzenButton Style="color:white;background-color:red;" ButtonStyle="ButtonStyle.Danger" class="dlgBtn" Click="@ClosePdiDlg" Text="İptal" />
     </div>
 </div>
 
@@ -74,50 +67,47 @@
 </style>
 @code {
     [Parameter]
-    public string CustomerOrderId { get; set; } = "";
+    public string EnCoilId { get; set; } = "";
 
     [Parameter]
     public string dlgType { get; set; } = "create";
 
-    private CustomerOrderDto customerOrderDto = new CustomerOrderDto { };
+    private PDI pdiDto = new PDI { };
     [Inject]
-    CustomerOrderApi itemApi { get; set; }
+    PdiApi itemApi { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         if (dlgType == "create")
         {
-            customerOrderDto = new CustomerOrderDto { };
+            pdiDto = new PDI { };
         }
         if (dlgType == "update")
         {
-            customerOrderDto = await itemApi.GetCustomerOrder(CustomerOrderId);
+            pdiDto = await itemApi.GetPdi(EnCoilId);
         }
         await base.OnInitializedAsync();
 
     }
-    void CloseDialog()
+    void ClosePdiDlg()
     {
 
         dialogService.Close(true);
 
     }
-    async void SaveCustomerOrder()
+    async void SavePdi()
     {
-        customerOrderDto.CustomerId = 1;
 
         if (dlgType == "create")
         {
-            customerOrderDto.CustomerOrderId = Guid.NewGuid().ToString();
-            customerOrderDto.CreatedDate = DateTime.Now;
-            await itemApi.AddCustomerOrder(customerOrderDto);
+            await itemApi.AddPdi(pdiDto);
 
         }
         if (dlgType == "update")
         {
-            await itemApi.UpdateCustomerOrder(customerOrderDto);
+            await itemApi.UpdatePdi(pdiDto);
         }
-        CloseDialog();
+        ClosePdiDlg();
     }
 
 }

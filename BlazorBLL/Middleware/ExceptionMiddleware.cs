@@ -44,7 +44,7 @@ namespace BlazorBLL.Middleware
 
             var res = new ReturnResult
             {
-                Msg = "Seviye-2 Program Hatası",
+                Msg = "Seviye-2 Program Hatası : " + ex.Message ,
                 IsSuccess = 0
 
             };

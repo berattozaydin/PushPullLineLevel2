@@ -3,11 +3,13 @@ using System.Net.Http.Json;
 using System.Net.Http;
 using BlazorDAL.Models;
 using BlazorUI.Src;
+using BlazorDAL;
 
 namespace BlazorUI.Api
 {
     public class AuthApi
     {
+        //string END_POINT = "";
         string END_POINT = "http://localhost:5213/api/auth/"; // must be empty publish
         IHttpClient httpClient;
         NavigationManager navigationManager;
@@ -15,7 +17,7 @@ namespace BlazorUI.Api
         {
             this.httpClient = httpClient;
             this.navigationManager = navigationManager;
-            // END_POINT = navigationManager.BaseUri+"api/auth/"; // must be open for publish
+            //END_POINT = navigationManager.BaseUri+"api/auth/"; // must be open for publish
 
         }
         public async Task<Result> Login(AccountDto user)

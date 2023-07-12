@@ -1,4 +1,5 @@
 ﻿@page "/Login";
+@using BlazorDAL;
 @using Radzen;
 @using BlazorDAL.Models;
 @using BlazorUI.Api;
@@ -9,59 +10,59 @@
 @attribute [AllowAnonymous]
 
 <PageTitle>Seviye-2 Giriş Yap</PageTitle>
-<div class="container">
-    <div class="d-flex justify-content-center mt-5 py-5">
+<div class="vh-100 bgs">
+    
+        <div class="d-flex text-center justify-content-center">
 
-        <RadzenCard style="width:350px;height:450px;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 text-center py-3">
-                        <img src="/Image/cinarCelik.jpg" alt="Çınar Çelik" style="width: 19rem;" />
-                    </div>
-                    <div class="col-12 text-center py-3">
-                        <p class="fw-bold">Çınar Çelik Push Pull Asitleme Hattına Giriş Yap</p>
-                    </div>
-                    <div class="col-12">
-                        <span class="form-floating mb-3">
-                            <RadzenText class="px-2" TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Kullanıcı Adı</RadzenText>
-                            <RadzenTextBox @bind-Value=account.Username Placeholder="Lütfen Kullanıcı Giriniz" class="w-100" style="height:40px !important; border-radius:20px 20px !important" />
-                        </span>
-                    </div>
-                    <div class="col-12 py-2">
-                        <span class="form-floating mb-3">
-                            <RadzenText class="px-2" TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Şifre</RadzenText>
-                            <RadzenPassword @bind-Value=account.Password Placeholder="Lütfen Şifre Giriniz" class="w-100" style="height:40px !important;border-radius:20px 20px !important" />
-                        </span>
-                    </div>
-                    @if (isActivatedUser == false)
-                    {
-                        <div class="col-12 p-2">
-                            <div class="text-center">
-                                <RadzenButton Click="(()=>LoginUser())" ButtonStyle="ButtonStyle.Danger" style="border-radius:20px 20px" Text="Giriş Yap"></RadzenButton>
-                            </div>
+            <RadzenCard class="justify-content-center" style="margin-top:8.5rem !important;width:350px;height:450px;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 text-center py-3">
+                            <img src="/Image/cinarCelik.jpg" alt="Çınar Çelik" style="width: 19rem;" />
                         </div>
-                    }
+                        <div class="col-12 text-center py-3">
+                            <p class="fw-bold">Çınar Çelik Push Pull Asitleme Hattına Giriş Yap</p>
+                        </div>
+                        <div class="col-12">
+                            <span class="form-floating mb-3">
+                                <RadzenText class="px-2" TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Kullanıcı Adı</RadzenText>
+                                <RadzenTextBox @bind-Value=account.USER_NAME @onkeyup="@Enter" Placeholder="Lütfen Kullanıcı Giriniz" class="w-100" style="height:40px !important; border-radius:20px 20px !important" />
+                            </span>
+                        </div>
+                        <div class="col-12 py-2">
+                            <span class="form-floating mb-3">
+                                <RadzenText class="px-2" TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Şifre</RadzenText>
+                                <RadzenPassword @bind-Value=account.PASSWORD @onkeyup="@Enter" Placeholder="Lütfen Şifre Giriniz" class="w-100" style="height:40px !important;border-radius:20px 20px !important" />
+                            </span>
+                        </div>
+                        @if (isActivatedUser == false)
+                        {
+                            <div class="col-12 p-2">
+                                <div class="text-center">
+                                    <RadzenButton Click="(()=>LoginUser())" ButtonStyle="ButtonStyle.Danger" style="border-radius:20px 20px" Text="Giriş Yap"></RadzenButton>
+                                </div>
+                            </div>
+                        }
 
-                    @if (isActivatedUser == true)
-                    {
-                        <div class="col-12 p-2">
-                            <div class="mx-3 text-center">
-                                <RadzenAlert Style="border-radius:10px; text-align:center;" AllowClose="false" Size="AlertSize.ExtraSmall" AlertStyle="@alertStyle" Variant="Variant.Flat" Shade="Shade.Lighter">
-                                    @alertMessage
-                                </RadzenAlert>
+                        @if (isActivatedUser == true)
+                        {
+                            <div class="col-12 p-2">
+                                <div class="mx-3 text-center">
+                                    <RadzenAlert Style="border-radius:10px; text-align:center;" AllowClose="false" Size="AlertSize.ExtraSmall" AlertStyle="@alertStyle" Variant="Variant.Flat" Shade="Shade.Lighter">
+                                        @alertMessage
+                                    </RadzenAlert>
+                                </div>
                             </div>
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
-            </div>
 
-        </RadzenCard>
-    </div>
-
-
+            </RadzenCard>
+        </div>
 </div>
-<style scoped>
-    .background {
+
+<style>
+    .bgs {
         background-color: #ed213a !important;
     }
 </style>
@@ -92,7 +93,11 @@
             _isActivatedUser = value;
         }
     }
-
+    protected async Task Enter(KeyboardEventArgs e)
+    {
+        if(e.Key =="Enter"||e.Key =="NumpadEnter")
+           LoginUser();
+    }
     public async Task LoginUser()
     {
         var logingUser = await authApi.Login(account);
@@ -100,7 +105,7 @@
         {
             ChangeAlert("Kullanıcı adı veya şifre yanlış", AlertStyle.Danger);
             await Task.Delay(500);
-            navigationManager.NavigateTo("/login", forceLoad: true);
+            //navigationManager.NavigateTo("/login", forceLoad: true);
 
         }
         if (logingUser.isSuccess == 1)
@@ -117,7 +122,7 @@
         {
             ChangeAlert("Kullanıcı adı veya şifre yanlış", AlertStyle.Danger);
             await Task.Delay(500);
-            navigationManager.NavigateTo("/login");
+            //navigationManager.NavigateTo("/login");
         }
     }
     async void SaveLocalStorage(string token, string eMail, string userName)

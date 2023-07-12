@@ -1,7 +1,7 @@
 using Blazor.Core.Src;
 using BlazorBLL.Managers;
 using BlazorBLL.Middleware;
-using BlazorBLL.State;
+using BlazorBLL.HubMgr;
 using BlazorUI.StateStore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +26,11 @@ builder.Services.AddSingleton(x =>
     return new Database(DatabaseConfiguration.Build()
    .UsingConnectionString(ConnectionString.PostGre)
    .UsingProviderName(DbProviders.PostSql)
+   .UsingDefaultMapper<ConventionMapper>(m =>
+   {
+       m.InflectTableName = (inflector, s) => s.ToLowerInvariant();
+       m.InflectColumnName = (inflector, s) => s.ToLowerInvariant();
+   })
    .UsingCommandTimeout(180)
    .WithAutoSelect());
 }
@@ -35,6 +40,11 @@ builder.Services.AddScoped<IDatabase>(x =>
     return DatabaseConfiguration.Build()
        .UsingConnectionString(ConnectionString.PostGre)
        .UsingProviderName(DbProviders.PostSql)
+       .UsingDefaultMapper<ConventionMapper>(m =>
+       {
+           m.InflectTableName = (inflector, s) => s.ToLowerInvariant();
+           m.InflectColumnName = (inflector, s) => s.ToLowerInvariant();
+       })
        .UsingCommandTimeout(180)
        .WithAutoSelect()
        .Create();
@@ -44,12 +54,15 @@ builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddTransient<Manager>();
-builder.Services.AddScoped<CustomerOrderManager>();
+builder.Services.AddScoped<PdiManager>();
 builder.Services.AddScoped<AuthManager>();
 builder.Services.AddScoped<EvtAlmManager>();
 builder.Services.AddScoped<DelayManager>();
 builder.Services.AddScoped<ShiftManager>();
 builder.Services.AddScoped<UserManager>();
+builder.Services.AddScoped<AdminManager>();
+builder.Services.AddScoped<LevelerManager>();
+builder.Services.AddScoped<PdoManager>();
 
 builder.Services.AddScoped<StateService>();
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>

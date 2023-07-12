@@ -1,7 +1,7 @@
 ﻿@using BlazorDAL.Models;
 @using BlazorUI.Api;
 @inject DialogService dialogService;
-<div class="container text-center">
+<!--<div class="container text-center">
     <div class="row">
         <div class="col justify-content-center">
             <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Bobin Numarası</RadzenText>
@@ -28,7 +28,7 @@
     public string coilId { get; set; } = "";
     public CustomerOrderDto customerOrderDto = new CustomerOrderDto { };
     [Inject]
-    CustomerOrderApi customerOrderApi { get; set; }
+    PdiApi customerOrderApi { get; set; }
     protected override async Task OnInitializedAsync()
     {
         customerOrderDto = await customerOrderApi.GetCustomerOrder(coilId);
@@ -42,5 +42,5 @@
     {
         dialogService.Close(true);
     }
-}
+}-->
 

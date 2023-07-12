@@ -1,0 +1,124 @@
+﻿@page "/Pdo"
+@using BlazorDAL;
+@using BlazorUI.Api;
+@using BlazorUI.Components.Pdo;
+@inject DialogService dialogService;
+@attribute [Authorize]
+<PageTitle>Pdi</PageTitle>
+<RadzenCard style="display: flex; align-items: center; gap: 0.5rem;background-color:#c6c3c6;">
+    <div class="m-auto">
+        <RadzenCard class="mx-auto " style="display: flex; text-align:end; align-items:end; gap: 0.6rem;background-color:#c6c3c6;">
+            <div class="container">
+                <div class="row float-end">
+                    <div class="col-6">
+                        <RadzenButton Text="Ekle" Style="border-radius:20px;" ButtonStyle="ButtonStyle.Success" Click="@(()=>OpenPdoDlg(null,"create"))" Icon="add_circle_outline"></RadzenButton>
+                    </div>
+                    <div class="col-6">
+                        <RadzenButton Text="Yenile" Style="border-radius:20px;" ButtonStyle="ButtonStyle.Primary" Click="@(()=>GetAll())" Icon="refresh"></RadzenButton>
+
+                    </div>
+                </div>
+            </div>
+        </RadzenCard>
+        <RadzenDataGrid @ref="radzenDataGrid"
+                        FilterText="Ara..."
+                        AllowFiltering="true"
+                        AllowAlternatingRows="false"
+                        FilterMode="FilterMode.Simple"
+                        AllowSorting="true"
+                        AllowPaging="true"
+                        PagerHorizontalAlign="HorizontalAlign.Left"
+                        Data="@pdoDto"
+                        TItem="PDO"
+                        class="tp-datatable tp-table-fixed"
+                        Style="background-color:#c6c3c6; --rz-cell-filter-width:20px;"
+                        GridLines="DataGridGridLines.Both"
+                        SelectionMode="DataGridSelectionMode.Single"
+                        Density="Density.Compact"
+                        
+                        >
+            <Columns>
+
+                <RadzenDataGridColumn TItem="PDO" Filterable Property="EX_COIL_ID" CssClass="text-center" Title="Bobin Numarası" />
+                <RadzenDataGridColumn TItem="PDO" Property="EN_COIL_ID" CssClass="text-center" Title="Giriş Bobin Numarası" />
+                <RadzenDataGridColumn TItem="PDO" Property="PRD_DATI" CssClass="text-center" Title="Üretim Tarihi" />
+                <RadzenDataGridColumn TItem="PDO" Property="OUT_DIA" CssClass="text-center" Title="Dış Çap" />
+                <RadzenDataGridColumn TItem="PDO" Property="PRD_THICK" CssClass="text-center" Title="Kalınlık (mm)" />
+                <RadzenDataGridColumn TItem="PDO" Property="PRD_WIDTH" CssClass="text-center" Title="Genişlik (cm)" />
+                <RadzenDataGridColumn TItem="PDO" Property="PRD_LENGTH" CssClass="text-center" Title="Uzunluk (m)" />
+                <RadzenDataGridColumn TItem="PDO" Property="CALC_WEIGHT" CssClass="text-center" Title="Hesaplanan Ağırlık (kg)" />
+                <RadzenDataGridColumn TItem="PDO" Property="OIL_AMOUNT" CssClass="fs-1" Title="Yağlama Miktarı (g/m²)" />
+                <RadzenDataGridColumn TItem="PDO" Property="EX_COIL_ID" CssClass="fs-1 w-auto" Title="İşlemler">
+                    <Template Context="data">
+                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="pageview" class="h-25 m-1" Click="@(()=>OpenPdoDlg(data.EX_COIL_ID,"update"))" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="delete" class="h-25 m-1" Click="@(()=>DeletePdo(data))" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+</RadzenCard>
+@code {
+    List<PDO> pdoDto = new List<PDO>();
+    RadzenDataGrid<PDO>? radzenDataGrid;
+    [Inject]
+    PdoApi pdoApi { get; set; }
+    bool first = false;
+    //public PdiDto lazyParams = new PdiDto { };
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAll();
+    }
+    async Task OpenPdoDlg(string exCoilId, string dlgType)
+    {
+        DialogOptions dialogOptions = new DialogOptions
+            {
+                Width = "1000px",
+                Height = "550px",
+                Style="border-radius:5px;",
+                ShowTitle = true,
+            };
+
+        Dictionary<string, object> dict = new Dictionary<string, object>()
+        {
+            {"ExCoilId",exCoilId},
+            {"dlgType",dlgType}
+        };
+        var dialogTitle = (dlgType == "create" ? "Ürün Bobini Ekle" : (exCoilId + " Bobinini Düzenle"));
+        await dialogService.OpenAsync<PdoDlg>(dialogTitle, dict, dialogOptions);
+
+    }
+    async Task GetAll()
+    {
+        pdoDto = await pdoApi.GetAllPdoList();
+    }
+    async void DeletePdo(PDO pdo)
+    {
+        var result = await dialogService
+        .Confirm(pdo.EX_COIL_ID + " bobinini silmek istiyor musunuz?", "Uyarı",
+        new ConfirmOptions { OkButtonText="Evet", CancelButtonText="Hayır" });
+        if (result == true)
+        {
+            pdoApi.DeletePdo(pdo);
+            await GetAll();
+        }
+
+    }
+    /*async void OnFilter(DataGridColumnFilterEventArgs<PdiDto> args)
+        {
+        lazyParams.Page = 1;
+        lazyParams.First = 0;
+        lazyParams.Rows = 20;
+        lazyParams.TotalRecords=20;
+        lazyParams.SortOrder =(int)(args.Column.SortOrder.Value);
+        lazyParams.SortField = args.FilterValue.ToString();
+        //await GetAll();
+    }*/
+    /*void RowRender(RowRenderEventArgs<PdiDto> args)
+        {
+        if (args.Data.CustomerOrderStatusName == "Sipariş Oluşturuldu")
+            {
+            args.Attributes.Add("style", $"background-color:red");
+    }
+    }*/
+}

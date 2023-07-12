@@ -1,5 +1,4 @@
 ﻿using BlazorBLL.Managers;
-using BlazorDAL;
 using BlazorDAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -10,18 +9,18 @@ namespace BlazorWebApi.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
-    public class UserController : ControllerBase
+    public class AdminController : ControllerBase
     {
-        UserManager userManager;
-        public UserController(UserManager userManager)
+        AdminManager adminManager;
+        public AdminController(AdminManager adminManager)
         {
-            this.userManager = userManager;       
+            this.adminManager = adminManager;
         }
 
-        [HttpGet]
-        public ReturnResult<List<USER_DATA>> GetUserList()
+        [HttpPost]
+        public ReturnResult SendRefresh()
         {
-            var res = userManager.GetUserList();
+            var res = adminManager.SendRefresh();
             return res;
         }
     }

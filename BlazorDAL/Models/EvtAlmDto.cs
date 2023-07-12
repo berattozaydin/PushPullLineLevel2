@@ -8,11 +8,16 @@ namespace BlazorDAL.Models
 {
     public class EvtAlmDto : BaseParameter
     {
-        public int? event_alarm_id { get; set; }
-        public string? machine_name { get; set; }
-        public string? user_name { get; set; }
-        public string? log_description { get; set; }
-        public string? log_method { get; set; }
-        public DateTime? dati { get; set; }
+        public long ID { get; set; }
+        public int LINE_NUMBER { get; set; }
+        public int SEVERITY { get; set; }
+        public int KIND { get; set; }
+        public DateTime DATI { get; set; }
+        public string? USER_NAME { get; set; }
+        public string? METHOD_NAME { get; set; }
+        public string? CLASS_NAME { get; set; }
+        public string? USER_MSG { get; set; }
+        public string? SYS_MSG { get;set; }
+        
     }
 }
