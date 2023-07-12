@@ -2,7 +2,7 @@
 
 <SvgBase Scale="Scale">
     <path id="@Id" style="stroke:@Color;stroke-width:@Width;stroke-opacity:1;"
-          d="M @X,@(Length + Y) V @Y" />
+          d="M @SvgUtility.FloatToStringWithDot(X),@SvgUtility.FloatToStringWithDot(Length + Y) V @SvgUtility.FloatToStringWithDot(Y)" />
 </SvgBase>
 
 

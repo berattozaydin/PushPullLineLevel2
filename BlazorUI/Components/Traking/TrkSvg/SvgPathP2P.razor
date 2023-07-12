@@ -1,6 +1,6 @@
 ﻿
 <SvgBase Scale="Scale"> 
-    <path id="@Id" style="stroke:@Color;stroke-width:@Width" d="m @XStart,@YStart @(XEnd-XStart),@(YEnd-YStart)" />
+    <path id="@Id" style="stroke:@Color;stroke-width:@Width" d="m @SvgUtility.FloatToStringWithDot(XStart),@SvgUtility.FloatToStringWithDot(@YStart) @SvgUtility.FloatToStringWithDot(XEnd-XStart),@SvgUtility.FloatToStringWithDot(YEnd-YStart)" />
 </SvgBase>
 
 
