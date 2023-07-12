@@ -96,7 +96,7 @@
     protected async Task Enter(KeyboardEventArgs e)
     {
         if(e.Key =="Enter"||e.Key =="NumpadEnter")
-           LoginUser();
+           await LoginUser();
     }
     public async Task LoginUser()
     {

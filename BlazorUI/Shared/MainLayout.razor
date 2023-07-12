@@ -6,20 +6,20 @@
 <div class="page">
     <main>
         <AuthorizeView>
-            <RadzenHeader class="bg-white mb-1 w-auto">
-                <div class="float-left pt-1">
+            <RadzenHeader class="bg-white w-auto">
+                <div class="">
                     <div class="container-1">
-                        <div class="row">
-                            <div class="m-2 justify-content-start w-auto">
+                        <div class="row" style="height:35px;">
+                            <div class="col-6 col-md-2">
                                 <img src="/Image/tp-logo.png" alt="teknoplanjpg" height="30" />
                             </div>
-                            <div class="justify-content-center w-auto">
+                            <div class="col-2 col-md-8">
                                 <NavMenu />
                             </div>
-                            <div class="justify-content-end w-auto">
-                                <div class="ms-3 pt-1">
+                            <div class="text-end col-4 col-md-2">
+                                <div>
                                     <BlazorUI.Components.ActiveForeman ></BlazorUI.Components.ActiveForeman>
-                                    <RadzenButton Style="height:37px; background-color:#3a8aec; text-decoration-color:white;font-size:small;" Click="()=>LogOut()" Text="Çıkış Yap"></RadzenButton>
+                                    <RadzenButton Style="height:35px; background-color:#3a8aec; text-decoration-color:white;font-size:small;" Click="()=>LogOut()" Text="Çıkış Yap"></RadzenButton>
                                 </div>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
             </RadzenHeader>
 
         </AuthorizeView>
-        <div class="content pt-5">
+        <div class="content pt-4">
             @Body
         </div>
         <RadzenFooter Style="height:20px;">
@@ -57,8 +57,8 @@
     protected override async Task OnInitializedAsync()
     {
         string pn = "/global";
-        //string navigation = NavigationManager.BaseUri + "/websocket?pagename=";
-        string navigation = "http://localhost:5213/websocket?pagename=";
+        //string navigation = NavigationManager.BaseUri + "/websocket?pagename="; //must be open for publish
+        string navigation = "http://localhost:5213/websocket?pagename="; //must be empty for publish
         hubConnection = new HubConnectionBuilder()
         .WithUrl(navigation + pn)
         .WithAutomaticReconnect()

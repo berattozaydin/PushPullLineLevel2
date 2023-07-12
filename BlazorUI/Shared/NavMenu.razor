@@ -2,7 +2,7 @@
 @inject DialogService dialogService;
 <AuthorizeView>
     <Authorized>
-        <RadzenMenu class="radzenMenu text-center navbar navbar-expand-lg navbar-light bg-light">
+        <RadzenMenu class="radzenMenu text-center navbar navbar-expand-lg navbar-light">
 
             <RadzenMenuItem class="w-50" Text="Hat İzleme" Path="Traking"></RadzenMenuItem>
             <RadzenMenuItem class="w-50" @ref="radzenMenuItemRef" Text="Bobin Bilgileri">
@@ -11,13 +11,15 @@
             </RadzenMenuItem>
             <RadzenMenuItem class="w-50" Text="Duruşlar" Path="Delays"></RadzenMenuItem>
             <RadzenMenuItem class="w-50" Text="Olay Günlükleri" Path="EvtAlm"></RadzenMenuItem>
-            
-            <RadzenMenuItem Text="Sistem Ayarları">
+            <RadzenMenuItem Text="Hat Ayarları">
                 <RadzenMenuItem Icon="donut_large" Text="Vardiya Formeni" Click="()=>ChangeShiftForeman()" class="subItem fs-6"></RadzenMenuItem>
-                <RadzenMenuItem Icon="donut_large" Text="Yönetim Paneli" Path="SystemControlPanel" class="subItem fs-6"></RadzenMenuItem>
+                
                 <RadzenMenuItem Text="Leveler Ayarları" Path="Leveler" class="fs-6"></RadzenMenuItem>
                 <RadzenMenuItem Text="Kaliteler" class="fs-6"></RadzenMenuItem>
                 <RadzenMenuItem Text="Reçeteler" class="fs-6"></RadzenMenuItem>
+            </RadzenMenuItem>
+            <RadzenMenuItem Text="Sistem Ayarları">
+                <RadzenMenuItem Icon="donut_large" Text="Yönetim Paneli" Path="SystemControlPanel" class="subItem fs-6"></RadzenMenuItem>
             </RadzenMenuItem>
         </RadzenMenu>
     </Authorized>
@@ -35,15 +37,41 @@
         background-color: white !important;
     }
 
+   
     .radzenMenu .rz-navigation-item-link {
         margin-left: 1.5rem;
         width: 155px;
         margin-top: auto;
-        height: 40px;
+        height: 35px;
+        border-radius:5px !important;
         background-color: #3a8aec !important;
         text-decoration-color: unset !important;
+        
+    }
+   @@media only screen and (max-width: 500px) {
+  .radzenMenu .rz-navigation-item-link {
+        margin-left: -6rem;
+        width: 15rem;
+        margin-top: auto;
+        height: 35px;
+        border-radius:5px !important;
+        background-color: #3a8aec !important;
+        text-decoration-color: unset !important;
+        
     }
 
+        .rz-navigation-menu {
+            width: 15rem !important;
+            margin-left: -2rem !important;
+            border-color: white;
+            padding: 0 !important;
+            top: 2.55rem !important;
+            border-style: solid;
+            border-radius: 5px !important;
+            background-color: #3a8aec !important;
+        }
+
+}
     .rz-navigation-item-link:hover {
         background-color: red !important;
     }
@@ -59,6 +87,7 @@
         padding:0 !important;
         top:2.55rem !important;
         border-style: solid;
+        border-radius: 5px !important;
         background-color: #3a8aec !important;
     }
 
@@ -69,7 +98,13 @@
             color: white !important;
         }
 
+        .rz-menu-toggle{
+            color:black !important;
+        }
 
+    .rz-menu-toggle-item{
+        padding:0 !important;
+    }
 </style>
 @code {
     private bool collapseNavMenu = true;

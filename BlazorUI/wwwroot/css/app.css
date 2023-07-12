@@ -80,7 +80,9 @@ a, .btn-link {
 RadzenDataGridColumn {
     background-color: #c6c3c6 !important;
 }
-
+.rz-data-grid{
+    z-index:0 !important;
+}
 .rz-data-row {
     text-align: center !important;
     font-weight: initial !important;
