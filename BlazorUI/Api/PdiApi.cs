@@ -21,18 +21,18 @@ namespace BlazorUI.Api
         }
 
 
-        public async Task<ReturnResult> UpdatePdi(PDI parametres)
+        public async Task<PDI> UpdatePdi(PDI parametres)
         {
             Uri url = new Uri(END_POINT + "UpdatePdi");
             var res = await httpClient.PostAsJsonAsync(url, parametres);
-            var result = await res.ReadAsync<ReturnResult>();
+            var result = res.Data;
             return result;
         }
-        public async Task<ReturnResult> AddPdi(PDI parametres)
+        public async Task<PDI> AddPdi(PDI parametres)
         {
             Uri uriCustomerOrder = new Uri(END_POINT + "AddPdi");
             var res = await httpClient.PostAsJsonAsync(uriCustomerOrder, parametres);
-            var result = await res.ReadAsync<ReturnResult>();
+            var result = res.Data;
             return result;
         }
         public async Task<List<PdiDto>> GetPdiList()
@@ -53,18 +53,18 @@ namespace BlazorUI.Api
             var res = await httpClient.GetFromJsonAsync<ReturnResult<List<CustomerOrderStatus>>>(urL);
             return res.result;
         }*/
-        public async Task<ReturnResult> DeletePdi(PdiDto pdi)
+        public async Task<PdiDto> DeletePdi(PdiDto pdi)
         {
             Uri urL = new Uri(END_POINT + "DeletePdi");
             var res = await httpClient.PostAsJsonAsync(urL, pdi);
-            var result = await res.ReadAsync<ReturnResult>();
+            var result = res.Data;
             return result;
         }
-        public async Task<ReturnResult> ChangePdiStatus(PDI pdi)
+        public async Task<PDI> ChangePdiStatus(PDI pdi)
         {
             Uri urL = new Uri(END_POINT + "ChangePdiStatus");
             var res = await httpClient.PostAsJsonAsync(urL, pdi);
-            var result = await res.ReadAsync<ReturnResult>();
+            var result = res.Data;
             return result;
         }
     }

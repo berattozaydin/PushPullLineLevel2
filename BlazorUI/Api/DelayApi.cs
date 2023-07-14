@@ -25,11 +25,11 @@ namespace BlazorUI.Api
             var res = await httpClient.GetFromJsonAsync<ReturnResult<List<DelayDto>>>(urL);
             return res.result;
         }
-        public async Task<ReturnResult> DeleteDelay(DelayDto delay)
+        public async Task<DelayDto> DeleteDelay(DelayDto delay)
         {
             Uri urL = new Uri(END_POINT + "DeleteDelay");
             var res = await httpClient.PostAsJsonAsync(urL, delay);
-            var result = await res.ReadAsync<ReturnResult>();
+            var result = res.Data;
             return result;
         }
         public async Task<DelayDto> GetDelay(int delayId)

@@ -20,7 +20,7 @@ namespace BlazorUI.Src
         private const HttpCompletionOption DefaultCompletionOption = HttpCompletionOption.ResponseContentRead;
         private HttpClient _httpClient;
 
-        public event Action<HttpClientResult> OnResponse;
+        public event Action<object,HttpMethod> OnResponse;
         public event Action OnRequestd;
 
         public Axios()
@@ -144,33 +144,49 @@ namespace BlazorUI.Src
         [RequiresUnreferencedCode(SerializationUnreferencedCodeMessage)]
         public Task<HttpResponseMessage> PostAsJsonAsync<TValue>(string? requestUri, TValue value, JsonSerializerOptions? options = null, CancellationToken cancellationToken = default)
         {
-            if (_httpClient == null)
+            try
             {
-                throw new ArgumentNullException(nameof(_httpClient));
-            }
+                if (_httpClient == null)
+                {
+                    throw new ArgumentNullException(nameof(_httpClient));
+                }
 
-            JsonContent content = JsonContent.Create(value, mediaType: null, options);
-            return _httpClient.PostAsync(requestUri, content, cancellationToken);
+                JsonContent content = JsonContent.Create(value, mediaType: null, options);
+                return _httpClient.PostAsync(requestUri, content, cancellationToken);
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+            
         }
 
         [RequiresUnreferencedCode(SerializationUnreferencedCodeMessage)]
-        public async Task<HttpResponseMessage> PostAsJsonAsync<TValue>(Uri? requestUri, TValue value, JsonSerializerOptions? options = null, CancellationToken cancellationToken = default)
+        public async Task<HttpClientResult<TValue>> PostAsJsonAsync<TValue>(Uri? requestUri, TValue value, JsonSerializerOptions? options = null, CancellationToken cancellationToken = default)
         {
-            if (_httpClient == null)
+            try
             {
-                throw new ArgumentNullException(nameof(_httpClient));
+                if (_httpClient == null)
+                {
+                    throw new ArgumentNullException(nameof(_httpClient));
+                }
+
+                JsonContent content = JsonContent.Create(value, mediaType: null, options);
+                var responseMessage = await _httpClient.PostAsync(requestUri, content, cancellationToken); ;
+                var jsonData = await responseMessage.Content.ReadFromJsonAsync<ReturnResult<TValue>>();
+                var httpClientRes = new HttpClientResult<TValue>
+                {
+                    HttpResponseMessage = responseMessage,
+                    Data =jsonData.result,
+                };
+                OnResponse.Invoke(jsonData,responseMessage.RequestMessage.Method);
+                return httpClientRes;
             }
-
-            JsonContent content = JsonContent.Create(value, mediaType: null, options);
-            var responseMessage = await _httpClient.PostAsync(requestUri, content, cancellationToken); ;
-            var jsonData = await responseMessage.Content.ReadFromJsonAsync<ReturnResult<TValue>>();
-
-            OnResponse.Invoke(new HttpClientResult
+            catch(Exception ex)
             {
-                HttpResponseMessage = responseMessage,
-                Data = jsonData,
-            });
-            return responseMessage;
+                throw;
+            }
+         
         }
 
         [RequiresUnreferencedCode(SerializationUnreferencedCodeMessage)]
@@ -187,11 +203,7 @@ namespace BlazorUI.Src
             var responseMessage = await _httpClient.GetAsync(requestUri, cancellationToken);
             var jsonData = await responseMessage.Content.ReadFromJsonAsync<ReturnResult<TValue>>();
 
-            OnResponse.Invoke(new HttpClientResult
-            {
-                HttpResponseMessage = responseMessage,
-                Data = jsonData,
-            });
+            OnResponse.Invoke(jsonData,responseMessage.RequestMessage.Method);
             return jsonData.result;
         }
 
@@ -200,12 +212,7 @@ namespace BlazorUI.Src
         {
             var responseMessage = await _httpClient.GetAsync(requestUri, cancellationToken);
             var jsonData = await responseMessage.Content.ReadFromJsonAsync<TValue>();
-            OnResponse.Invoke(new HttpClientResult
-            {
-                HttpResponseMessage = responseMessage,
-                Data = jsonData,
-                Type = typeof(TValue)
-            });
+            OnResponse.Invoke(jsonData, responseMessage.RequestMessage.Method);
             return jsonData;
             //return _httpClient.GetFromJsonAsync<TValue>(requestUri,   cancellationToken);
 
@@ -224,11 +231,15 @@ namespace BlazorUI.Src
         }
     }
 
-    public class HttpClientResult
+    public class HttpClientResult<T>
     {
-        public object Data { get; set; }
+        public T Data { get; set; }
         public Type Type { get; set; }
         public HttpResponseMessage HttpResponseMessage { get; set; }
+    }
+    public class HttpClientResult:HttpClientResult<object>
+    {
+      
     }
 
 }

@@ -1,6 +1,120 @@
 ﻿@page "/Leveler"
-<h3>Leveler</h3>
+@using BlazorDAL;
+@using BlazorUI.Api;
+@using BlazorUI.Components.Leveler;
+@inject DialogService dialogService;
+@attribute [Authorize]
+<PageTitle>Leveler Ayarları</PageTitle>
+<RadzenCard style="display: flex; align-items: center; gap: 0.5rem;background-color:#c6c3c6;">
+    <div class="m-auto">
+        <RadzenCard class="mx-auto " style="display: flex; text-align:end; align-items:end; gap: 0.6rem;background-color:#c6c3c6;">
+            <div class="container">
+                <div class="row float-end">
+                    <div class="col-6">
+                        <RadzenButton Text="Ekle" Style="border-radius:20px;" ButtonStyle="ButtonStyle.Success" Click="@(()=>OpenLevelerSettingDlg(null,"create"))" Icon="add_circle_outline"></RadzenButton>
+                    </div>
+                    <div class="col-6">
+                        <RadzenButton Text="Yenile" Style="border-radius:20px;" ButtonStyle="ButtonStyle.Primary" Click="@(()=>GetAll())" Icon="refresh"></RadzenButton>
 
+                    </div>
+                </div>
+            </div>
+        </RadzenCard>
+        <RadzenDataGrid @ref="radzenDataGrid"
+                        FilterText="Ara..."
+                        AllowFiltering="true"
+                        AllowAlternatingRows="false"
+                        FilterMode="FilterMode.Simple"
+                        AllowSorting="true"
+                        AllowPaging="true"
+                        PagerHorizontalAlign="HorizontalAlign.Left"
+                        Data="@levelerSettingList"
+                        TItem="LEVELER_SETTING"
+                        class="tp-datatable tp-table-fixed"
+                        Style="background-color:#c6c3c6; --rz-cell-filter-width:20px;"
+                        GridLines="DataGridGridLines.Both"
+                        SelectionMode="DataGridSelectionMode.Single"
+                        Density="Density.Compact">
+            <Columns>
+
+                <RadzenDataGridColumn TItem="LEVELER_SETTING" Filterable Property="ID" CssClass="text-center" Title="Leveler Ayarı Numarası" />
+                <RadzenDataGridColumn TItem="LEVELER_SETTING" Property="THICKNESS" CssClass="text-center" Title="Kalınlık (mm)" />
+                <RadzenDataGridColumn TItem="LEVELER_SETTING" Property="INTERMESH1" CssClass="text-center" Title="Intermesh1" />
+                <RadzenDataGridColumn TItem="LEVELER_SETTING" Property="INTERMESH2" CssClass="text-center" Title="Intermesh2" />
+                <RadzenDataGridColumn TItem="LEVELER_SETTING" Property="ANTICROSSBOW" CssClass="text-center" Title="Anticrossbow" />
+                <RadzenDataGridColumn TItem="LEVELER_SETTING" Property="ANTICOILSET" CssClass="fs-1 w-auto" Title="Anticoilset"/>
+                <RadzenDataGridColumn TItem="LEVELER_SETTING" Property="ID" CssClass="fs-1 w-auto" Title="İşlemler">
+                    <Template Context="data">
+                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="pageview" class="h-25 m-1" Click="@(()=>OpenLevelerSettingDlg(data.ID,"update"))" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="delete" class="h-25 m-1" Click="@(()=>DeleteLevelerSetting(data))" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+</RadzenCard>
 @code {
+    List<LEVELER_SETTING> levelerSettingList = new List<LEVELER_SETTING>();
+    RadzenDataGrid<LEVELER_SETTING>? radzenDataGrid;
+    [Inject]
+    LevelerApi levelerApi { get; set; }
+    bool first = false;
+    //public PdiDto lazyParams = new PdiDto { };
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAll();
+    }
+    async Task OpenLevelerSettingDlg(int? levelerSettingId, string dlgType)
+    {
+        DialogOptions dialogOptions = new DialogOptions
+            {
 
+                Style="border-radius:5px;width:25%;height:%40;",
+                ShowTitle = true,
+            };
+
+        Dictionary<string, object> dict = new Dictionary<string, object>()
+        {
+            {"LevelerSettingId",levelerSettingId},
+            {"dlgType",dlgType}
+        };
+        var dialogTitle = (dlgType == "create" ? "Leveler Ayarını Ekle" : (levelerSettingId + " Leveler Ayarını  Düzenle"));
+        var res =await dialogService.OpenAsync<LevelerDlg>(dialogTitle, dict, dialogOptions);
+        if (res == true)
+            await GetAll();
+    }
+    async Task GetAll()
+    {
+        levelerSettingList = await levelerApi.GetAllLevelerSettingList();
+        StateHasChanged();
+    }
+    async void DeleteLevelerSetting(LEVELER_SETTING levelerSetting)
+    {
+        var result = await dialogService
+        .Confirm(levelerSetting.ID + " leveler ayarını silmek istiyor musunuz?", "Uyarı",
+        new ConfirmOptions { OkButtonText="Evet", CancelButtonText="Hayır" });
+        if (result == true)
+        {
+            levelerApi.DeletelevelerSetting(levelerSetting);
+            await GetAll();
+        }
+
+    }
+    /*async void OnFilter(DataGridColumnFilterEventArgs<PdiDto> args)
+        {
+        lazyParams.Page = 1;
+        lazyParams.First = 0;
+        lazyParams.Rows = 20;
+        lazyParams.TotalRecords=20;
+        lazyParams.SortOrder =(int)(args.Column.SortOrder.Value);
+        lazyParams.SortField = args.FilterValue.ToString();
+        //await GetAll();
+    }*/
+    /*void RowRender(RowRenderEventArgs<PdiDto> args)
+        {
+        if (args.Data.CustomerOrderStatusName == "Sipariş Oluşturuldu")
+            {
+            args.Attributes.Add("style", $"background-color:red");
+    }
+    }*/
 }

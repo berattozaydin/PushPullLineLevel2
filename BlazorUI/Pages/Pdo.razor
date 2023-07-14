@@ -35,7 +35,6 @@
                         GridLines="DataGridGridLines.Both"
                         SelectionMode="DataGridSelectionMode.Single"
                         Density="Density.Compact"
-                        
                         >
             <Columns>
 
@@ -91,6 +90,7 @@
     async Task GetAll()
     {
         pdoDto = await pdoApi.GetAllPdoList();
+        StateHasChanged();
     }
     async void DeletePdo(PDO pdo)
     {
@@ -99,7 +99,7 @@
         new ConfirmOptions { OkButtonText="Evet", CancelButtonText="Hayır" });
         if (result == true)
         {
-            pdoApi.DeletePdo(pdo);
+            await pdoApi.DeletePdo(pdo);
             await GetAll();
         }
 

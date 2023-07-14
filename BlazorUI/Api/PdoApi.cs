@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Reflection.Metadata;
 using System;
 using Radzen;
+using System.Net.Http.Json;
 
 namespace BlazorUI.Api
 {
@@ -30,19 +31,30 @@ namespace BlazorUI.Api
         {
             var urL = new Uri(END_POINT+"UpdatePdo");
             var res = await _httpClient.PostAsJsonAsync(urL, pdoDto);
-            await res.ReadAsync<ReturnResult>();
+        
         }
         public async void AddPdo(PDO pdoDto)
         {
-            var urL = new Uri(END_POINT+"AddPdo");
-            var res = await _httpClient.PostAsJsonAsync(urL, pdoDto);
-            await res.ReadAsync<ReturnResult>();
+            try
+            {
+                var urL = new Uri(END_POINT+"AddPdo");
+                var res = await _httpClient.PostAsJsonAsync(urL, pdoDto);
+               
+            }catch(Exception ex)
+            {
+                throw;
+            }
+            
         }
-        public async void DeletePdo(PDO pdoDto)
+        public async Task<PDO> DeletePdo(PDO pdoDto)
         {
             var urL = new Uri(END_POINT+"DeletePdo");
+            
             var res = await _httpClient.PostAsJsonAsync(urL, pdoDto);
-            await res.ReadAsync<ReturnResult>();
+            var tr = res.Data;
+            
+            //var result = await res.ReadAsync<ReturnResult>();
+            return tr;
         }
         public async Task<PDO> GetPdo(string exCoilId)
         {

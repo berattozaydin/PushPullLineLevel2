@@ -30,13 +30,13 @@ builder.Services.AddScoped<IHttpClient>(sp =>
 {
 
     var a = new Axios { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
-    a.OnResponse += async (jsonResponse) =>
+    a.OnResponse += async (jsonResponse,httpMethod) =>
     {
         DialogService dialogService = sp.GetService<DialogService>();
 
         if (dialogService == null) return;
 
-        var data = jsonResponse.Data;
+        var data = jsonResponse;
 
         if (data.GetType().Name.Contains(nameof(ReturnResult)) == false)
         {
@@ -48,7 +48,7 @@ builder.Services.AddScoped<IHttpClient>(sp =>
         var isSuccess = data.GetType().GetProperty(nameof(ReturnResult.IsSuccess))!.GetValue(data) as int?;
 
 
-        if (isSuccess == 1 && jsonResponse.HttpResponseMessage.RequestMessage.Method != HttpMethod.Get)
+        if (isSuccess == 1 && httpMethod != HttpMethod.Get)
             await dialogService.Alert(msg, "Ýþlem Baþarýlý", new AlertOptions { OkButtonText = "Kapat" });
         else if (isSuccess == 0)
             await dialogService.Alert(msg, "Hata", new AlertOptions { OkButtonText = "Kapat" });

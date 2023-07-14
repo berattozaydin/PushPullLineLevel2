@@ -1711,4 +1711,60 @@ namespace BlazorDAL
         private string _LAST_NAME;
 
     }
+
+    [TableName("dbo.leveler_setting")]
+    [ExplicitColumns]
+    [PrimaryKey("id")]
+    public class LEVELER_SETTING : Record<LEVELER_SETTING>
+    {
+
+        [ResultColumn(IncludeInAutoSelect.Yes)]
+        public int ID
+        {
+            get { return _ID; }
+            set { _ID = value; OnPropertyChanged(); }
+        }
+        private int _ID;
+
+        [Column]
+        public short THICKNESS
+        {
+            get { return _THICKNESS; }
+            set { _THICKNESS = value; OnPropertyChanged(); }
+        }
+        private short _THICKNESS;
+
+        [Column]
+        public short INTERMESH1
+        {
+            get { return _INTERMESH1; }
+            set { _INTERMESH1 = value; OnPropertyChanged(); }
+        }
+        private short _INTERMESH1;
+
+        [Column]
+        public short INTERMESH2
+        {
+            get { return _INTERMESH2; }
+            set { _INTERMESH2 = value; OnPropertyChanged(); }
+        }
+        private short _INTERMESH2;
+
+        [Column]
+        public short ANTICROSSBOW
+        {
+            get { return _ANTICROSSBOW; }
+            set { _ANTICROSSBOW = value; OnPropertyChanged(); }
+        }
+        private short _ANTICROSSBOW;
+
+        [Column]
+        public short ANTICOILSET
+        {
+            get { return _ANTICOILSET; }
+            set { _ANTICOILSET = value; OnPropertyChanged(); }
+        }
+        private short _ANTICOILSET;
+
+    }
 }

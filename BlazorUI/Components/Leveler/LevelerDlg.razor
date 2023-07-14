@@ -1,5 +1,107 @@
-﻿<h3>LevelerDlg</h3>
+﻿@using BlazorDAL;
+@using BlazorUI.Api;
+@inject DialogService dialogService;
+<fieldset class="border rounded-3 p-3">
+    <div class="row">
+        <legend class="col-form-label col-sm-2 pt-0">Leveler Ayarları</legend>
+        <RadzenRow Gap="2rem" Class="rz-p-0 rz-p-lg-4">
+            <RadzenColumn Size="12" SizeMD="12">
+                <div class="container text-center">
 
+                    <div class="row justify-content-center">
+                        <div class="col">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">INTERMESH1</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=levelerSetting.INTERMESH1 class="textBox"></RadzenNumeric>
+                        </div>
+                        <div class="col">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">INTERMESH2</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=levelerSetting.INTERMESH2 class="textBox"></RadzenNumeric>
+                        </div>
+                        <div class="col">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">ANTICROSSBOW</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=levelerSetting.ANTICROSSBOW class="textBox"></RadzenNumeric>
+                        </div>
+                        <div class="col">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">ANTICOILSET</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=levelerSetting.ANTICOILSET class="textBox"></RadzenNumeric>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md">
+                            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="text-align:center">Kalınlık (mm)</RadzenText>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value=levelerSetting.THICKNESS class="textBox"></RadzenNumeric>
+                        </div>
+                    </div>
+                </div>
+            </RadzenColumn>
+        </RadzenRow>
+    </div>
+</fieldset>
+<div class="row mt-3">
+    <div class="col-3" style="padding:0.5rem;">
+        <RadzenButton Icon="done" Style="background-color:blue;color:white;" class="dlgBtn" Click="@SaveLevelerSetting" Text="Kaydet" />
+    </div>
+    <div class="col-6" style="padding:0.5rem;">
+        <RadzenButton Icon="done" Style="background-color:red;color:white;" class="dlgBtn" Click="@SaveLevelerSetting" Text="Kaydet ve Kapat" />
+    </div>
+    <div class="col-3">
+        <RadzenButton Style="color:white;background-color:red;" ButtonStyle="ButtonStyle.Danger" class="dlgBtn" Click="@CloseLevelerSettingDlg" Text="İptal" />
+    </div>
+</div>
+
+<style>
+    .dlgBtn {
+        border: 1px 2px;
+        border-radius: 10px;
+        font-size:smaller !important;
+        
+    }
+
+</style>
 @code {
+    [Parameter]
+    public int LevelerSettingId { get; set; }
+
+    [Parameter]
+    public string dlgType { get; set; } = "create";
+
+    private LEVELER_SETTING levelerSetting = new LEVELER_SETTING { };
+    [Inject]
+    LevelerApi LevelerApi { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (dlgType == "create")
+        {
+            levelerSetting = new LEVELER_SETTING { };
+        }
+        if (dlgType == "update")
+        {
+            levelerSetting = await LevelerApi.GetLevelerSetting(LevelerSettingId);
+        }
+        await base.OnInitializedAsync();
+
+    }
+    void CloseLevelerSettingDlg()
+    {
+
+        dialogService.Close(true);
+
+    }
+    async void SaveLevelerSetting()
+    {
+
+        if (dlgType == "create")
+        {
+            
+           LevelerApi.AddLevelerSetting(levelerSetting);
+
+        }
+        if (dlgType == "update")
+        {
+            LevelerApi.UpdateLevelerSetting(levelerSetting);
+        }
+        CloseLevelerSettingDlg();
+    }
 
 }
