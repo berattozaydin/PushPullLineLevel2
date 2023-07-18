@@ -58,7 +58,7 @@
             </RadzenDataGrid>
         </div>
         </RadzenCard>
-        @code {
+@code {
     List<PdiDto> pdiDto = new List<PdiDto>();
     RadzenDataGrid<PdiDto>? radzenDataGrid;
     [Inject]
@@ -68,7 +68,7 @@
     protected override async Task OnInitializedAsync()
     {
         await GetAll();
-        
+
 
     }
     async Task OpenPdiDlg(string enCoilId, string dlgType)
@@ -86,7 +86,9 @@
             {"dlgType",dlgType}
         };
         var dialogTitle = (dlgType == "create" ? "Bobin Ekle" : (enCoilId + " Bobinini Düzenle"));
-        await dialogService.OpenAsync<PdiDlg>(dialogTitle, dict, dialogOptions);
+        var res = await dialogService.OpenAsync<PdiDlg>(dialogTitle, dict, dialogOptions);
+        if (res == true)
+            dialogService.Close();
 
     }
     async Task GetAll()

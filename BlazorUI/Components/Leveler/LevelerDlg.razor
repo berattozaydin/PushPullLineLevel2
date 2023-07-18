@@ -37,25 +37,21 @@
         </RadzenRow>
     </div>
 </fieldset>
+<div class="container-1">
 <div class="row mt-3">
-    <div class="col-3" style="padding:0.5rem;">
+    <div class="col-md-4 divScreen">
         <RadzenButton Icon="done" Style="background-color:blue;color:white;" class="dlgBtn" Click="@SaveLevelerSetting" Text="Kaydet" />
     </div>
-    <div class="col-6" style="padding:0.5rem;">
-        <RadzenButton Icon="done" Style="background-color:red;color:white;" class="dlgBtn" Click="@SaveLevelerSetting" Text="Kaydet ve Kapat" />
+    <div class="col-md-6 divScreen">
+        <RadzenButton Icon="done" Style="background-color:blue;color:white;" class="dlgBtn" Click="@SaveLevelerSetting" Text="Kaydet ve Kapat" />
     </div>
-    <div class="col-3">
+    <div class="col-md-2 divScreen">
         <RadzenButton Style="color:white;background-color:red;" ButtonStyle="ButtonStyle.Danger" class="dlgBtn" Click="@CloseLevelerSettingDlg" Text="İptal" />
     </div>
 </div>
+</div>
 
 <style>
-    .dlgBtn {
-        border: 1px 2px;
-        border-radius: 10px;
-        font-size:smaller !important;
-        
-    }
 
 </style>
 @code {

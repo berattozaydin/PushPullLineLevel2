@@ -146,3 +146,72 @@ RadzenDataGridColumn {
     background-color: #c3c3c3 !important;
     color: black;
 }
+.divScreen{
+    font-size:smaller !important;
+}
+@media screen and (max-width: 1185px)  {
+    .dlgbtn {
+        margin: auto !important;
+    }
+
+    .divScreen {
+        text-align: center !important;
+        margin-top:1rem !important;
+        border-radius:10px 10px !important;      
+    }
+    .text-end {
+        text-align: center !important;
+    }
+    .customClass {
+        display: flex !important;
+        flex-direction: column !important;
+        
+    }
+        .customClass .divCustomClass {
+            margin-top: 1rem !important;
+            margin-left : 30% !important;
+            text-align:center !important;
+            width:20rem !important
+        }
+    .rz-navigation-item-active ul {
+        margin-left: -4.1rem !important;
+        width: 13rem !important;
+        text-align:center !important;
+    } 
+
+}
+
+/*500PX*/
+@media only screen and (max-width: 500px) {
+    .dlgbtn {
+        margin: auto !important;
+    }
+
+    .divScreen {
+        text-align: center !important;
+        margin-top: 1rem !important;
+        border-radius: 10px 10px !important;
+    }
+
+    .text-end {
+        text-align: center !important;
+    }
+
+    .customClass {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+        .customClass .divCustomClass {
+            margin-top: 1rem !important;
+            margin-left: 1rem !important;
+            text-align: center !important;
+            width: 20rem !important
+        }
+
+    .rz-navigation-item-active ul {
+        margin-left: -4.6rem !important;
+        width: 13rem !important;
+        text-align: center !important;
+    }
+}

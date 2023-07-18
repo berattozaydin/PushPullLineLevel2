@@ -47,7 +47,7 @@
         text-decoration-color: unset !important;
         
     }
-   @@media only screen and (max-width: 500px) {
+   @@media only screen and (max-width: 1200px) {
   .radzenMenu .rz-navigation-item-link {
         margin-left: -6rem;
         width: 15rem;
@@ -71,6 +71,67 @@
         }
 
 }
+
+    @@media only screen and (max-width: 1185px) {
+        .radzenMenu .rz-navigation-item-link {
+            margin-left: -4rem !important;
+            width: 10rem;
+            margin-top: auto;
+            height: 35px;
+            border-radius: 5px !important;
+            background-color: #3a8aec !important;
+            text-decoration-color: unset !important;
+        }
+
+        .rz-navigation-menu {
+            width: 10rem !important;
+            margin-left: -4rem !important;
+            border-color: white;
+            padding: 0 !important;
+            top: 2.55rem !important;
+            border-style: solid;
+            border-radius: 5px !important;
+            background-color: #3a8aec !important;
+        }
+
+        .rz-menu-toggle {
+            color: black !important;
+            margin-right: -2.2rem !important;
+        }
+
+        .rz-navigation-item-active ul {
+            margin-left: -4rem !important;
+            width: 10rem !important;
+            text-align: center !important;
+        }
+    }
+    @@media only screen and (max-width: 500px) {
+        .radzenMenu .rz-navigation-item-link {
+            margin-left: -7.2rem !important;
+            width: 15rem;
+            margin-top: auto;
+            height: 35px;
+            border-radius: 5px !important;
+            background-color: #3a8aec !important;
+            text-decoration-color: unset !important;
+        }
+
+        .rz-navigation-menu {
+            width: 15rem !important;
+            margin-left: -2rem !important;
+            border-color: white;
+            padding: 0 !important;
+            top: 2.55rem !important;
+            border-style: solid;
+            border-radius: 5px !important;
+            background-color: #3a8aec !important;
+        }
+
+        .rz-menu-toggle {
+            color: black !important;
+           margin-right: -2.5rem !important;
+        }
+    }
     .rz-navigation-item-link:hover {
         background-color: red !important;
     }
@@ -80,7 +141,7 @@
     }
 
     .rz-navigation-menu {
-        width: 155px !important;
+        width: 165px !important;
         margin-left: 0.75rem !important;
         border-color: white;
         padding:0 !important;
@@ -99,6 +160,7 @@
 
         .rz-menu-toggle{
             color:black !important;
+            padding-right:3.5rem !important;
         }
 
     .rz-menu-toggle-item{
@@ -107,7 +169,6 @@
 </style>
 @code {
     private bool collapseNavMenu = true;
-    public RadzenMenuItem radzenMenuItemRef;
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
     async Task ChangeShiftForeman()
     {
